@@ -45,6 +45,7 @@ const createSendToken = (user, statusCode, res) => {
 
 const verifyJwtToken = catchAsync(async (req, res, next) => {
   // 1) Getting token and check ff it's there
+
   let token;
   if (
     req.headers.authorization &&
@@ -70,11 +71,8 @@ const verifyJwtToken = catchAsync(async (req, res, next) => {
 });
 
 const loggedInUser = catchAsync(async (req, res, next) => {
-  const currentUser = await User.findById(req.jwtPayload.id).populate({
-    path: "tags",
-    model: "Tag",
-    select: "name group",
-  });
+  const currentUser = await User.findById(req.jwtPayload.id);
+  console.log(currentUser);
   if (!currentUser) {
     return next(
       new AppError(
