@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/kartikeya-123/TRINIT_COOL_DEV02/issues"
   },
-  "homepage": "https://github.com/kartikeya-123/TRINIT_COOL_DEV02#readme"
+  "homepage": "https://github.com/kartikeya-123/TRINIT_COOL_DEV02#readme",
+  "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@mui/material": "^5.3.1"
+  }
 }
