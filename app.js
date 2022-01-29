@@ -11,7 +11,7 @@ const globalErrorHandler = require("./controllers/errorController");
 // const clientEndpoints = ["teams", "call", "team"];
 //routers
 const authRouter = require("./routes/authRoutes.js");
-// const userRouter = require("./routes/userRoutes.js");
+const userRouter = require("./routes/userRoutes.js");
 // const teamRouter = require("./routes/teamRoutes.js");
 
 //Creating an express App
@@ -39,7 +39,7 @@ app.use(middleware.requestLogger);
 
 // API Endpoints
 app.use("/api/v1/auth", authRouter);
-// app.use("/api/v1/user", userRouter);
+app.use("/api/v1/user", userRouter);
 // app.use("/api/v1/team", teamRouter);
 // app.get("/api/v1/turnCredentials", peerController.turnServer);
 // app.get("*", (req, res, next) => {

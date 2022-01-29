@@ -22,7 +22,9 @@ class Wrapper extends Component {
 
   getUser = (cookies) => {
     axios
-      .get("/api/v1/user/profile")
+      .get("/api/v1/user/profile", {
+        withCredentials: true,
+      })
       .then((res) => {
         // //console.log(res.data.data.user);
         this.setState({
@@ -39,6 +41,7 @@ class Wrapper extends Component {
 
   checkIsLoggedIn = () => {
     const cookies = this.props.cookies.cookies;
+    console.log(cookies);
     if (cookies.userData) {
       this.getUser(cookies);
     } else {
