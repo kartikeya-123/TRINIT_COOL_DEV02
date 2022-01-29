@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
   Redirect,
 } from "react-router-dom";
@@ -11,6 +11,9 @@ import { CircularProgress } from "@mui/material";
 
 import axios from "axios";
 import Login from "./views/auth/Login";
+import Home from "./Dashboard/Home";
+import NavBar from "./Dashboard/NavBar/NavBar";
+import DashboardLayout from "./Dashboard/DashboardLayout";
 
 class Wrapper extends Component {
   state = {
@@ -41,7 +44,7 @@ class Wrapper extends Component {
 
   checkIsLoggedIn = () => {
     const cookies = this.props.cookies.cookies;
-    console.log(cookies);
+
     if (cookies.userData) {
       this.getUser(cookies);
     } else {
@@ -91,7 +94,7 @@ class Wrapper extends Component {
         {!this.state.isLoading && !this.state.loggingOut ? (
           <>
             {this.state.isLoggedIn && this.state.user ? (
-              <div>Logged In</div>
+              <DashboardLayout user={this.state.user} />
             ) : (
               <div>
                 <Login sucessLogin={this.getLoggedInUser} load={this.load} />

@@ -25,7 +25,8 @@ mongoose
       console.log(`Server is running on port ${config.PORT}`);
     });
   })
-  .catch(() => {
+  .catch((err) => {
+    console.log(err);
     console.log("Could not connect to MongoDB server! Shutting down...");
     process.exit(1);
   });
