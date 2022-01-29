@@ -1,5 +1,5 @@
 import Home from "./Dashboard/Home";
-import Profile from "./Dashboard/Profile/Profile";
+import Profile from "./Dashboard/Profile";
 import Modal from "./Dashboard/Modal/Modal";
 import { Navigate } from "react-router-dom";
 

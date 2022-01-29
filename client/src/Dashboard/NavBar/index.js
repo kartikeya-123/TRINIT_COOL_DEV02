@@ -31,7 +31,7 @@ const NavBar = ({ user }) => {
   };
 
   return (
-    <div style={{ padding: "0px 20px" }}>
+    <div style={{ padding: "0px 20px", marginBottom: "30px" }}>
       <header
         style={{
           display: "flex",

@@ -1,10 +1,4 @@
 import React, { Component } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Redirect,
-} from "react-router-dom";
 import { CookiesProvider, withCookies } from "react-cookie";
 
 import { CircularProgress } from "@mui/material";
@@ -12,7 +6,7 @@ import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import Login from "./views/auth/Login";
 import Home from "./Dashboard/Home";
-import NavBar from "./Dashboard/NavBar/NavBar";
+import NavBar from "./Dashboard/NavBar";
 import DashboardLayout from "./Dashboard/DashboardLayout";
 
 class Wrapper extends Component {

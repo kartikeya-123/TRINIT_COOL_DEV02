@@ -1,34 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "./Profile.css";
-import {
-  Avatar,
-  Grid,
-  Button,
-  Card,
-  SvgIcon,
-  IconButton,
-  Fab,
-} from "@mui/material";
+import { Avatar, Grid, Button, Card, Fab } from "@mui/material";
 import BugReportIcon from "@mui/icons-material/BugReport";
-import MailIcon from "@mui/icons-material/Mail";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import axios from "axios";
 import Modal from "./../Modal/Modal";
 import { AddRounded } from "@mui/icons-material";
 
 const Profile = ({ user }) => {
-  const myTeams = [
-    "Team Name",
-    "Team Long Long Long Long Name",
-    "Team Long Long Long Long Long Long Long Long Name",
-    "Team 4",
-  ];
-
   return (
     <div className="body">
       <Grid container spacing={4}>
         <Grid item xs={3}>
-          <ProfileDetails user={user} teams={myTeams} />
+          <ProfileDetails user={user} />
         </Grid>
         <Grid item xs={8}>
           <ProfileStats orgs={user.organisations} />

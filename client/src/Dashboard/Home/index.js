@@ -62,7 +62,17 @@ const Home = () => {
           }}
         >
           <SearchRounded style={{ paddingRight: "10px" }} />
-          <InputBase placeholder="Search organisations" />
+          <InputBase
+            placeholder="Search organisations"
+            autoFocus
+            value={searchString}
+            onChange={({ target }) => {
+              let text = target.value;
+              text = text.trimStart();
+
+              setSearchString(text);
+            }}
+          />
         </Paper>
 
         <TableContainer
