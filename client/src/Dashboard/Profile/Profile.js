@@ -1,5 +1,6 @@
-import "./Profile.css";
-import { Avatar, Grid } from "@mui/material";
+import './Profile.css'
+import { Avatar, Grid } from '@mui/material'
+import BugReportIcon from '@mui/icons-material/BugReport';
 const Profile = () => {
   const myTeams = [
     "Team Name",
@@ -45,25 +46,36 @@ const ProfileDetails = (props) => {
 };
 
 const ProfileStats = (props) => {
-  return (
-    <div className="profileStats">
-      <h3>Stats</h3>
-      <div className="teamsBox">
-        <div className="heading">Bugs In Progress</div>
-        {props.teams.map((team) => {
-          return (
-            <div className="teamCard">
-              <p>{team}</p>
+    return <div className='profileStats'>
+        {/* <h3>Stats</h3> */}
+        <div className='statsBugs'>
+            <div className='stat' style={{  'border': '1px solid #ff7043'}}>
+                <BugReportIcon style={{ 'paddingRight': '6px' ,'color': '#ff7043'}} />
+                <div className='heading'>
+                    <p style={{ 'marginBottom': 0,'color': '#ff7043' }}>Pending Bugs: 4</p>
+                </div>
             </div>
-          );
-        })}
-      </div>
-      <div className="statsBugs">
-        <div className="heading">Total Bugs Assigned: 20</div>
-        <div className="heading">Bugs Resolved: 16</div>
-      </div>
+            <div className='stat' style={{  'border': '1px solid green'}}>
+                <BugReportIcon style={{ 'paddingRight': '6px', 'color': 'green' }} />
+                <div className='heading'>
+                    <p style={{ 'marginBottom': 0, 'color': 'green' }}>Bugs Resolved: 16</p>
+                </div>
+            </div>
+        </div>
+        <div className='teamsBox'>
+            {/* <div className='stat'>
+                <BugReportIcon style={{ 'paddingRight': '6px', 'color': '#ff7043' }} />
+                <div className='heading'>
+                    <p style={{ 'marginBottom': 0, 'color': '#ff7043' }}>Bugs In Progress</p>
+                </div>
+            </div> */}
+            {props.teams.map((team) => {
+                return <div className='teamCard'>
+                    <p>{team}</p>
+                </div>
+            })}
+        </div>
     </div>
-  );
 };
 
 export default Profile;
