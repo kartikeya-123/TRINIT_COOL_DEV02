@@ -17,6 +17,7 @@ exports.createBug = catchAsync(async (req, res, next) => {
   };
 
   const bug = await Bug.create(data);
+  await Team.findByIdAndUpdate(req.body.teamId, { $push: { bugs: bug.id } });
   res.status(bug).json({
     status: "success",
     bug: bug,
