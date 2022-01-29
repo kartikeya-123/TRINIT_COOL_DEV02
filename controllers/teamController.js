@@ -16,6 +16,7 @@ exports.createTeam = catchAsync(async (req, res, next) => {
       description: req.body.description,
       creator: userId,
       organisation: req.body.organisation,
+      roles: req.body.roles,
       members: [
         {
           userId: userId,
