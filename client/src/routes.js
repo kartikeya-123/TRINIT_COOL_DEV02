@@ -10,6 +10,7 @@ const setProps = (props) => {
         { path: "/", element: <Navigate to="/home" replace /> },
         { path: "/home", element: <Home {...props} /> },
         { path: "/profile", element: <Profile {...props} /> },
+        { path: "*", element: <Navigate to="/home" replace /> },
       ],
     },
   ];

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   IconButton,
@@ -17,6 +18,8 @@ import {
 } from "@mui/icons-material";
 
 const NavBar = ({ user }) => {
+  const navigate = useNavigate();
+
   const [menuAnchor, setMenuAnchor] = useState(null);
 
   const toggleMenu = ({ currentTarget }) => {
@@ -64,25 +67,44 @@ const NavBar = ({ user }) => {
               "aria-labelledby": "menu-button",
             }}
           >
-            <MenuItem onClick={handleClose}>
+            <MenuItem
+              onClick={() => {
+                navigate("/home");
+                handleClose();
+              }}
+            >
               <ListItemIcon>
                 <HomeRounded />
               </ListItemIcon>
               <ListItemText>Home</ListItemText>
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem
+              onClick={() => {
+                navigate("/profile");
+                handleClose();
+              }}
+            >
               <ListItemIcon>
                 <PersonRounded />
               </ListItemIcon>
               <ListItemText>Your Profile</ListItemText>
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem
+              onClick={() => {
+                navigate("/teams");
+                handleClose();
+              }}
+            >
               <ListItemIcon>
                 <GroupsRounded />
               </ListItemIcon>
               <ListItemText>Your Teams</ListItemText>
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+              }}
+            >
               <ListItemIcon>
                 <LogoutRounded />
               </ListItemIcon>
