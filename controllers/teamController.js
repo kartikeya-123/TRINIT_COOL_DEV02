@@ -2,6 +2,7 @@ const User = require("./../models/userModel");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const Team = require("./../models/teamModel");
+const Organisation = require("./../models/organisationModel");
 
 exports.createTeam = catchAsync(async (req, res, next) => {
   try {
@@ -14,6 +15,7 @@ exports.createTeam = catchAsync(async (req, res, next) => {
       name: req.body.name,
       description: req.body.description,
       creator: userId,
+      organisation: req.body.organisation,
       members: [
         {
           userId: userId,
@@ -46,6 +48,7 @@ exports.createTeam = catchAsync(async (req, res, next) => {
 
 exports.addMembersToTeam = catchAsync(async (req, res, next) => {
   const teamId = req.body.teamId;
+  const orgId = req.body.organisationId;
   const users = req.body.users;
 
   const team = await Team.findById(teamId);
@@ -59,6 +62,7 @@ exports.addMembersToTeam = catchAsync(async (req, res, next) => {
             teamId: team.id,
             role: user.role,
           },
+          organisations: orgId,
         },
       }
     );
@@ -76,5 +80,46 @@ exports.addMembersToTeam = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     team: team,
+  });
+});
+
+exports.createOrganisation = catchAsync(async (req, res, next) => {
+  const data = {
+    name: req.body.name,
+    creator: req.user.id,
+  };
+  const newOrg = await Organisation.create(data);
+  await User.findByIdAndUpdate(req.user.id, {
+    $push: { organisations: newOrg.id },
+  });
+  res.status(200).json({
+    status: "sucess",
+    organisation: newOrg,
+  });
+});
+
+exports.getTeamsOfOrganisation = catchAsync(async (req, res, next) => {
+  const orgId = req.body.organisationId;
+  const teams = await Team.find({ organisation: orgId }).populate({
+    path: "members.userId",
+    model: "User",
+    select: "name",
+  });
+  res.status(200).json({
+    status: "sucess",
+    teams: teams,
+  });
+});
+
+exports.getAllOrganisations = catchAsync(async (req, res, next) => {
+  const organisations = await Organisation.find().populate({
+    path: "creator",
+    model: "User",
+    select: "name email",
+  });
+
+  res.status(200).json({
+    status: "success",
+    organisations: organisations,
   });
 });
