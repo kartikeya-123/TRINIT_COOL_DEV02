@@ -100,3 +100,38 @@
   margin-bottom: 16px;
   color: #29434e;
 }
+
+.email{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.email p{
+  color: #757575;
+  margin: 0;
+}
+
+.buttonRoute{
+  margin-top: 24px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.buttonHeading{
+  
+}
+
+.buttonHeading p{
+  font-size: 18px;
+  font-weight: 300;
+  margin: 0;
+  padding: 0;
+  color: #29434e;
+}

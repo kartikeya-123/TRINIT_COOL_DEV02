@@ -8,8 +8,6 @@ import Profile from "./Dashboard/Profile/Profile";
 function App() {
   return (
     <div className="App">
-      <NavBar />
-      <Profile />
       <BrowserRouter>
         <Wrapper />
       </BrowserRouter>
