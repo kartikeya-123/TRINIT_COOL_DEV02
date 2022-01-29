@@ -1,0 +1,20 @@
+{
+  "name": "bug_tacking_system",
+  "version": "1.0.0",
+  "description": "Bug Tracking system",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kartikeya-123/TRINIT_COOL_DEV02.git"
+  },
+  "author": "ASK",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kartikeya-123/TRINIT_COOL_DEV02/issues"
+  },
+  "homepage": "https://github.com/kartikeya-123/TRINIT_COOL_DEV02#readme"
+}
