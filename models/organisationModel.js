@@ -14,6 +14,12 @@ const organisationSchema = new mongoose.Schema(
       type: Date,
       default: Date.now(),
     },
+    teams: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Team",
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },
