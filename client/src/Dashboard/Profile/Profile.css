@@ -79,6 +79,19 @@
     align-items: start;
     width: 100%;
     margin-top: 24px;
+    margin-bottom: 12px;
+}
+
+.stat{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.statsBugs .stat{
+    border-radius: 8px;
+    padding: 0px 8px;
 }
 
 .heading{
