@@ -12,7 +12,7 @@ const globalErrorHandler = require("./controllers/errorController");
 //routers
 const authRouter = require("./routes/authRoutes.js");
 const userRouter = require("./routes/userRoutes.js");
-// const teamRouter = require("./routes/teamRoutes.js");
+const teamRouter = require("./routes/teamRoutes.js");
 
 //Creating an express App
 const app = express();
@@ -40,6 +40,7 @@ app.use(middleware.requestLogger);
 // API Endpoints
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/team", teamRouter);
 // app.use("/api/v1/team", teamRouter);
 // app.get("/api/v1/turnCredentials", peerController.turnServer);
 // app.get("*", (req, res, next) => {

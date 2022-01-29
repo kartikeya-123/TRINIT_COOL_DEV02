@@ -25,6 +25,17 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    teams: [
+      {
+        teamId: {
+          type: mongoose.Schema.ObjectId,
+          ref: "Team",
+        },
+        role: {
+          type: String,
+        },
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },
