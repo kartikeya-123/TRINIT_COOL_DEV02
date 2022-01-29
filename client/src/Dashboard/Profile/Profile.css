@@ -1,6 +1,8 @@
 .body{
     width: 100vw;
     min-height: 100vh;
+    display: flex;
+    justify-content: center;
 }
 
 .container{
@@ -9,7 +11,8 @@
     max-width: 1080px;
     display: flex;
     justify-content: center;
-    margin: auto;
+    /* align-items: center; */
+    /* margin: auto; */
     /* border: 1px solid #B8B298;
     border-radius: 24px; */
 }
@@ -23,7 +26,7 @@
     padding: 16px;
 }
 
-.profileDetails .teamsBox{
+.teamsBox{
     /* border: 1px solid #cfd8dc;
     border-radius: 12px; */
     /* box-shadow: 0.5px 1px #cfd8dc; */
@@ -35,7 +38,7 @@
     margin-top: 24px;
 }
 
-.teamsBox .teamCard{
+.teamCard{
     border: 1px solid #cfd8dc;
     border-radius: 12px;
     width: 100%;
@@ -52,11 +55,35 @@
     color: #29434e;
 }
 
-.profileDetails h3{
+.container h3{
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
     line-height: 29px;
     letter-spacing: 0em;
     text-align: left;
+}
+
+.profileStats{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 16px;
+}
+
+.statsBugs{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+    width: 100%;
+    margin-top: 24px;
+}
+
+.heading{
+    font-size: 18px;
+    font-weight: 450;
+    margin-bottom: 16px;
+    color: #29434e;
 }
