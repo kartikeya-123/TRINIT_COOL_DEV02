@@ -1,4 +1,5 @@
 const User = require("./../models/userModel");
+const Organisation = require("./../models/organisationModel");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 // const { sendEmail } = require("../utils/sendEmail");
@@ -8,11 +9,13 @@ exports.aboutMe = catchAsync(async (req, res, next) => {
   if (!req.user) {
     return next(new AppError("This user is not present", 401));
   }
+  const user = await User.findById(req.user.id).populate({
+    path: "organisations",
+    model: "Organisation",
+  });
   res.status(200).json({
     status: "suceess",
-    data: {
-      user: req.user,
-    },
+    user: user,
   });
 });
 

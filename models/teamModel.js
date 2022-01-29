@@ -38,6 +38,27 @@ const teamSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    organisation: {
+      type: mongoose.Schema.ObjectId,
+      ref: "Organisation",
+    },
+    roles: [
+      {
+        name: {
+          type: String,
+        },
+        lead: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
+    bugs: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Bug",
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },

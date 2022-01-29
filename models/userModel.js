@@ -36,6 +36,12 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
+    organisations: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Organisation",
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },
