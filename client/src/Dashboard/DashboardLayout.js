@@ -1,4 +1,5 @@
-import { useRoutes, Outlet } from "react-router-dom";
+import { Container } from "@mui/material";
+import { useRoutes } from "react-router-dom";
 import setProps from "../routes";
 import NavBar from "./NavBar/NavBar";
 
@@ -8,7 +9,7 @@ const DashboardLayout = ({ user }) => {
   return (
     <div>
       <NavBar user={user} />
-      {routing}
+      <Container style={{ textAlign: "center" }}>{routing}</Container>
     </div>
   );
 };
