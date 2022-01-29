@@ -67,14 +67,14 @@ const ProfileStats = (props) => {
       <div className='heading'>My Organizations</div>
       <Grid container spacing={2} alignItems="stretch">
         {props.teams.map((team) => {
-          return <Grid item xs={4} style={{
+          return <Grid item xs={3} style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}>
             <Card style={{
               'width': '100%',
-              'height': '250px',
+              'height': '150px',
               'padding': '10px 10px',
               display: 'flex',
               flexDirection: 'column',
@@ -82,10 +82,13 @@ const ProfileStats = (props) => {
               'justifyContent': 'center'
             }}>
               <Avatar style={{
-                'width': '100px',
-                'height': '100px'
+                'width': '80px',
+                'height': '80px'
               }}>
-                {team[0]}
+                <p style={{
+                  fontSize:'2em',
+                  margin:0
+                }}>{team[0]}</p>
               </Avatar>
               <p style={{
                 textOverflow: 'ellipsis',
