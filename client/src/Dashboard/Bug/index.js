@@ -9,6 +9,7 @@ import {
   Paper,
   Typography,
   Fab,
+  Button,
 } from "@mui/material";
 import ModeEditRoundedIcon from "@mui/icons-material/ModeEditRounded";
 import AssignModal from "../Modal/AssignModal";
@@ -78,6 +79,20 @@ const Bug = ({ user }) => {
         });
     }
   }, [bug]);
+
+  const closeBug = () => {
+    axios
+      .patch("/api/v1/bug/resolve/" + bug.id)
+      .then((res) => {
+        // let oldBugs = [...bugs];
+        // oldBugs.push(res.data.bugs);
+        setBug(res.data.bug);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   const showBugModal = () => {
     setShowModal(true);
@@ -161,9 +176,9 @@ const Bug = ({ user }) => {
                         marginLeft: "6px",
                         backgroundColor:
                           bug.priority === "high"
-                            ? "red"
-                            : bug.status === "medium"
                             ? "orange"
+                            : bug.priority === "medium"
+                            ? "gold"
                             : "green",
                       }}
                     />
@@ -260,6 +275,25 @@ const Bug = ({ user }) => {
               {bug.description}
             </div>
           </Paper>
+          {bug.status !== "resolved" ? (
+            <div
+              style={{
+                // width:'100%',
+                display: "flex",
+                justifyContent: "center",
+                fontSize: "20px",
+              }}
+            >
+              <Button
+                style={{
+                  fontSize: "20px",
+                }}
+                onClick={closeBug}
+              >
+                Close Bug
+              </Button>
+            </div>
+          ) : null}
         </div>
       </div>
     );
