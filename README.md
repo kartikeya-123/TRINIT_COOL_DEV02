@@ -56,6 +56,8 @@ The bug page consists of the details of the bug such as creator, date of creatio
 
 ### Assign bug
 This features is visible to only employees of high priority
-![Screenshot (47)](https://user-images.githubusercontent.com/56500864/151693244-7d224f6c-a184-4797-b698-106aad83e933.png)
+<img width="958" alt="image" src="https://user-images.githubusercontent.com/56500864/151693326-9b9d4017-a820-4f99-a30a-837db7ce4b28.png">
 <img width="264" alt="image" src="https://user-images.githubusercontent.com/56500864/151693262-ac42cd7a-8d83-4480-ba1b-26c82242dfdb.png">
 
+### Close bug 
+Clicking on the close bug option will resolve the bug. This option is available to only for high bugs.
