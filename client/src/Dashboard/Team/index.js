@@ -45,10 +45,6 @@ const Team = () => {
   }, []);
 
   useEffect(() => {
-    console.log(show);
-  }, [show]);
-
-  useEffect(() => {
     if (bugs) {
       setShow(bugs);
     }
@@ -116,6 +112,10 @@ const Team = () => {
       );
     });
   };
+
+  useEffect(() => {
+    console.log(show);
+  }, [show]);
 
   return (
     <div>
