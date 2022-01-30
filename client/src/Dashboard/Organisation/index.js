@@ -17,7 +17,7 @@ import {
 import AddRounded from "@mui/icons-material/AddRounded";
 import TeamModal from "./../Modal/TeamModal.js";
 
-const Organisation = () => {
+const Organisation = ({ user }) => {
   const navigate = useNavigate();
 
   const [org, setOrg] = useState(null);
@@ -75,37 +75,39 @@ const Organisation = () => {
           {show.name}
         </Typography>
 
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Fab
-            size="medium"
-            variant="extended"
-            sx={{
-              height: "48px",
-              width: "48px",
-              transition: "all 200ms ease-in-out",
-              "&:hover": { width: "140px" },
-              "&:hover .fab-text": { opacity: "1 !important" },
-              flexWrap: "nowrap",
-              overflow: "hidden",
-              justifyContent: "flex-start",
-            }}
-            onClick={showTeamModal}
-          >
-            <AddRounded
-              style={{ transform: "translateX(calc(0.5em - 15px))" }}
-            />
-            <Typography
-              className="fab-text"
-              style={{
-                whiteSpace: "nowrap",
-                opacity: 0,
+        {user.id === org.creator ? (
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Fab
+              size="medium"
+              variant="extended"
+              sx={{
+                height: "48px",
+                width: "48px",
                 transition: "all 200ms ease-in-out",
+                "&:hover": { width: "140px" },
+                "&:hover .fab-text": { opacity: "1 !important" },
+                flexWrap: "nowrap",
+                overflow: "hidden",
+                justifyContent: "flex-start",
               }}
+              onClick={showTeamModal}
             >
-              NEW TEAM
-            </Typography>
-          </Fab>
-        </div>
+              <AddRounded
+                style={{ transform: "translateX(calc(0.5em - 15px))" }}
+              />
+              <Typography
+                className="fab-text"
+                style={{
+                  whiteSpace: "nowrap",
+                  opacity: 0,
+                  transition: "all 200ms ease-in-out",
+                }}
+              >
+                NEW TEAM
+              </Typography>
+            </Fab>
+          </div>
+        ) : null}
 
         <TableContainer
           component={Paper}
