@@ -127,9 +127,14 @@ const ProfileStats = ({ orgs, ...props }) => {
             width: "100%",
             display: "flex",
             justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "12px" 
           }}
         >
-          <div className="heading">My Organizations</div>
+          <div className="heading" style={{
+            margin:0,
+            padding:0
+          }}>My Organizations</div>
           <Fab
             onClick={showOrgModal}
             size="small"
