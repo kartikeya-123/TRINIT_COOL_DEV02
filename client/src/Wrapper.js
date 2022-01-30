@@ -23,9 +23,13 @@ class Wrapper extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        // console.log(res.data);
+        let userData = res.data.user;
+        userData["stats"] = res.data.stats;
+        console.log(userData);
         this.setState({
-          user: res.data.user,
+          user: userData,
+          // assigned: res.data.assigned,
+          // resolved: res.data.resolved,
           isLoggedIn: cookies ? cookies.isLoggedIn : this.state.isLoggedIn,
           isLoading: false,
         });

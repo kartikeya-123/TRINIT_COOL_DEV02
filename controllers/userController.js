@@ -22,8 +22,10 @@ exports.aboutMe = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "suceess",
     user: user,
-    assigned: assigned.length,
-    resolved: resolved.length,
+    stats: {
+      assigned: assigned,
+      resolved: resolved,
+    },
   });
 });
 

@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const Profile = ({ user }) => {
+  console.log(user);
   return (
     <div className="body">
       <Grid container spacing={4}>
@@ -132,13 +133,18 @@ const ProfileStats = ({ orgs, ...props }) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: "12px" 
+            marginBottom: "12px",
           }}
         >
-          <div className="heading" style={{
-            margin:0,
-            padding:0
-          }}>My Organizations</div>
+          <div
+            className="heading"
+            style={{
+              margin: 0,
+              padding: 0,
+            }}
+          >
+            My Organizations
+          </div>
           <Fab
             onClick={showOrgModal}
             size="small"
@@ -217,13 +223,13 @@ const ProfileStats = ({ orgs, ...props }) => {
         <div className="stat" style={{ border: "1px solid #ff7043" }}>
           <BugReportIcon style={{ paddingRight: "6px", color: "#ff7043" }} />
           <div className="heading">
-            <p style={{ marginBottom: 0, color: "#ff7043" }}>Pending Bugs: 4</p>
+            <p style={{ marginBottom: 0, color: "#ff7043" }}>Pending Bugs: 0</p>
           </div>
         </div>
         <div className="stat" style={{ border: "1px solid green" }}>
           <BugReportIcon style={{ paddingRight: "6px", color: "green" }} />
           <div className="heading">
-            <p style={{ marginBottom: 0, color: "green" }}>Bugs Resolved: 16</p>
+            <p style={{ marginBottom: 0, color: "green" }}>Bugs Resolved:0</p>
           </div>
         </div>
       </div>
