@@ -7,5 +7,5 @@ router.use(authController.verifyJwtToken, authController.loggedInUser);
 
 router.post("/create", teamController.createTeam);
 router.post("/add-members", teamController.addMembersToTeam);
-
+router.get("/:teamId", teamController.getTeam);
 module.exports = router;
