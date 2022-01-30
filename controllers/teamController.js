@@ -8,7 +8,14 @@ const Bug = require("../models/bugModel");
 exports.createTeam = catchAsync(async (req, res, next) => {
   try {
     const userId = req.user.id;
-
+    // const role = {
+    //   name: "Lead",
+    //   lead: true,
+    // };
+    // const roles = [];
+    // if (req.body.roles) {
+    //   roles = [role, req.body.roles];
+    // } else roles = [role];
     // if(!req.body.name || !req.body.description){
     //     return next(new AppError('No body or description',404));
     // }
@@ -146,28 +153,63 @@ exports.getTeam = catchAsync(async (req, res, next) => {
   const teamId = req.params.teamId;
   const team = await Team.findById(teamId);
   if (team) {
-    const ind = team.members.find((member) => member.userId === req.user.id);
-    if (ind === -1) {
-      //Not a member of team
-      const resolvedBugs = await Bug.find({ team: teamId, status: "resolved" });
-      const userBugs = await Bug.find({ created: { created_by: req.user.id } });
-
-      const bugs = [resolvedBugs, userBugs];
-
+    if (team.creator.toString() === req.user.id) {
+      const bugs = await Bug.find({ team: teamId });
+      //   const resolvedBugs = await Bug.find({ team: teamId, status: "resolved" });
+      //   const userBugs = await Bug.find({ created: { created_by: req.user.id } });
       res.status(200).json({
         team,
         bugs,
       });
     } else {
-      // Member of a team
-      const bugs = await Bug.find({ team: teamId });
-      //   const resolvedBugs = await Bug.find({ team: teamId, status: "resolved" });
-      //   const userBugs = await Bug.find({ created: { created_by: req.user.id } });
-
-      res.status(200).json({
-        team,
-        bugs,
+      const ind = team.members.findIndex((member) => {
+        return member.userId.toString() === req.user.id;
       });
+      if (ind === -1) {
+        //Not a member of team
+        const resolvedBugs = await Bug.find({
+          team: teamId,
+          status: "resolved",
+        });
+        const userBugs = await Bug.find({
+          created: { created_by: req.user.id },
+        });
+
+        const bugs = [...resolvedBugs, ...userBugs];
+
+        res.status(200).json({
+          team,
+          bugs,
+        });
+      } else {
+        // Member of a team
+        console.log(ind);
+        const role = team.members[ind].role;
+        const id = team.roles.findIndex((r) => r.name === role);
+        console.log(team.roles[id]);
+        if (team.roles[id].lead) {
+          const bugs = await Bug.find({ team: teamId });
+          //   const resolvedBugs = await Bug.find({ team: teamId, status: "resolved" });
+          //   const userBugs = await Bug.find({ created: { created_by: req.user.id } });
+          res.status(200).json({
+            team,
+            bugs,
+          });
+        } else {
+          const severeBugs = await Bug.find({ team: teamId, priority: "low" });
+          const assignedBugs = await Bug.find({
+            team: teamId,
+            assigned: { assigned_To: req.user.id },
+          });
+          const bugs = severeBugs.concat(assignedBugs);
+
+          res.status(200).json({
+            status: "sucess",
+            team,
+            bugs,
+          });
+        }
+      }
     }
   }
 });

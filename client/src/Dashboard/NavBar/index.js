@@ -40,7 +40,15 @@ const NavBar = ({ user }) => {
           alignItems: "center",
         }}
       >
-        <Typography variant="h5">BTS</Typography>
+        <Typography
+          variant="h5"
+          onClick={() => {
+            navigate("/");
+          }}
+          style={{ cursor: "pointer" }}
+        >
+          BTS
+        </Typography>
         <div
           style={{
             display: "flex",

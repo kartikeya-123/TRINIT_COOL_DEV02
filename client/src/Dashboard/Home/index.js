@@ -11,6 +11,8 @@ import {
   TableBody,
   TableContainer,
   TableHead,
+  Typography,
+  CircularProgress,
 } from "@mui/material";
 import { SearchRounded } from "@mui/icons-material";
 
@@ -39,6 +41,41 @@ const Home = () => {
       });
   }, []);
 
+  const showName = (name) => {
+    if (searchString === "") return name;
+
+    const pieces = name.toLowerCase().split(searchString.toLowerCase());
+
+    let pos = 0;
+    return pieces.map((piece, index) => {
+      const curr = pos;
+      pos = pos + piece.length + searchString.length;
+      return (
+        <span key={`${name}-${index}`}>
+          {name.substr(curr, piece.length)}
+          {index !== pieces.length - 1 ? (
+            <b style={{ backgroundColor: "lightblue", fontWeight: 500 }}>
+              {name.substr(curr + piece.length, searchString.length)}
+            </b>
+          ) : (
+            ""
+          )}
+        </span>
+      );
+    });
+  };
+
+  useEffect(() => {
+    if (!searchString || searchString === "") setShow(org);
+    else {
+      setShow(
+        org.filter((el) =>
+          el.name.toLowerCase().includes(searchString.toLowerCase())
+        )
+      );
+    }
+  }, [searchString]);
+
   const getMembers = (teams) => {
     let m = new Set();
     teams.forEach((team) => {
@@ -50,6 +87,7 @@ const Home = () => {
     if (m.size) return m.size;
     return 1;
   };
+
   return (
     <div>
       <div>
@@ -78,68 +116,84 @@ const Home = () => {
             }}
           />
         </Paper>
-
-        <TableContainer
-          component={Paper}
+        <div
           style={{
             margin: "50px auto",
-            width: "min(90vw,600px)",
-            borderRadius: "20px",
+            display: "flex",
+            justifyContent: "center",
           }}
         >
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell width={"20px"}></TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell align="center">Members</TableCell>
-                <TableCell align="center">Teams</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {show &&
-                show.map((row) => (
-                  <TableRow
-                    key={row.name}
-                    sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
-                      cursor: "pointer",
-                      transition: "all 150ms ease-in-out",
-                      "&:hover": { backgroundColor: "rgb(240,240,240)" },
-                    }}
-                    onClick={() => {
-                      navigate("/org/" + row.id);
-                    }}
-                  >
-                    <TableCell
-                      style={{
-                        paddingRight: "5px",
-                        paddingTop: "10px",
-                        paddingBottom: "10px",
-                      }}
-                    >
-                      <Avatar>{row.name[0]}</Avatar>
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      style={{
-                        paddingLeft: "5px",
-                      }}
-                    >
-                      {row.name}
-                    </TableCell>
-                    <TableCell align="center">
-                      {row.teams ? getMembers(row.teams) : 1}
-                    </TableCell>
-                    <TableCell align="center">
-                      {row.teams ? row.teams.length : 0}
-                    </TableCell>
+          {show && show.length > 0 ? (
+            <TableContainer
+              component={Paper}
+              style={{
+                width: "min(90vw,600px)",
+                borderRadius: "20px",
+              }}
+            >
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell width={"20px"}></TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell align="center">Members</TableCell>
+                    <TableCell align="center">Teams</TableCell>
                   </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {show.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                        cursor: "pointer",
+                        transition: "all 150ms ease-in-out",
+                        "&:hover": { backgroundColor: "rgb(240,240,240)" },
+                      }}
+                      onClick={() => {
+                        navigate("/org/" + row.id);
+                      }}
+                    >
+                      <TableCell
+                        style={{
+                          paddingRight: "5px",
+                          paddingTop: "10px",
+                          paddingBottom: "10px",
+                        }}
+                      >
+                        <Avatar>{row.name[0]}</Avatar>
+                      </TableCell>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {showName(row.name)}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.teams ? getMembers(row.teams) : 1}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.teams ? row.teams.length : 0}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : show ? (
+            <div>
+              {" "}
+              <Typography variant="h6">🤷‍♂️ Nothing here ...</Typography>
+            </div>
+          ) : (
+            <div>
+              <CircularProgress />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

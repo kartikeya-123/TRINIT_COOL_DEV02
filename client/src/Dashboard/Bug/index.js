@@ -12,6 +12,12 @@ import {
 } from "@mui/material";
 import ModeEditRoundedIcon from '@mui/icons-material/ModeEditRounded';
 import AssignModal from "../Modal/AssignModal";
+import {
+  BugReportRounded,
+  AlbumRounded,
+  CheckRounded,
+} from "@mui/icons-material";
+import { padding } from "@mui/system";
 
 const month = [
   "Jan",
@@ -90,16 +96,17 @@ const Bug = ({ user }) => {
     };
     console.log(data)
     axios
-        .post("/api/v1/bug/patch", data)
-        .then((res) => {
-            // let oldBugs = [...bugs];
-            // oldBugs.push(res.data.bugs);
-            setBug(res.data.bug);
-            closeModal();
-        })
-        .catch((err) => {
-            console.error(err);
-        });
+      .patch("/api/v1/bug/assign/"+bug.id, data)
+      .then((res) => {
+        // let oldBugs = [...bugs];
+        // oldBugs.push(res.data.bugs);
+        setBug(res.data.bug);
+        console.log(res.data)
+        closeModal();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   if (bug)
@@ -107,59 +114,69 @@ const Bug = ({ user }) => {
       <div>
         <AssignModal show={showModal} close={closeModal} add={addBug} />
         <div style={{ textAlign: "left" }}>
-          <div style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center"
-          }}>
-            <div>
-              <Typography variant="h4" align="left">
-                {bug.name}
-              </Typography>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <Chip
-                  label={bug.status}
-                  color={
-                    bug.status === "raised"
-                      ? "primary"
-                      : bug.status === "assigned"
-                        ? "warning"
-                        : "success"
-                  }
-                  size="small"
-                />
-                {!bug.priority ?
+          <div>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              alignItems: 'center'
+            }}>
+              <div style={{ display: "flex", flexDirection:'column', justifyContent:'start' }}>
+                <Typography variant="h4" align="left">
+                  {bug.name}
+                </Typography>
+                <div>
                   <Chip
-                    label={bug.priority + " Priority"}
+                    label={bug.status}
+                    icon={
+                      bug.status === "raised" ? (
+                        <BugReportRounded />
+                      ) : bug.status === "assigned" ? (
+                        <AlbumRounded />
+                      ) : (
+                        <CheckRounded />
+                      )
+                    }
+                    color={
+                      bug.status === "raised"
+                        ? "primary"
+                        : bug.status === "assigned"
+                          ? "warning"
+                          : "success"
+                    }
                     size="small"
-                    style={{
-                      marginLeft: '6px',
-                      backgroundColor: bug.priority === "high"
-                        ? "red"
-                        : bug.status === "medium"
-                          ? "orange"
-                          : "green"
-                    }}
                   />
-                  : null}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    padding: "5px 10px",
-                  }}
-                >
-                  <Typography
-                    align="left"
-                    style={{ color: "grey", fontSize: "14px" }}
+                  {bug.priority ?
+                    <Chip
+                      label={bug.priority + " Priority"}
+                      size="small"
+                      style={{
+                        marginLeft: '6px',
+                        backgroundColor: bug.priority === "high"
+                          ? "red"
+                          : bug.status === "medium"
+                            ? "orange"
+                            : "green"
+                      }}
+                    />
+                    : null}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      padding: "5px 0px",
+                    }}
                   >
-                    {bug.created.created_by.name} raised this bug on
-                    {" " + displayDate(bug.created.created_at)}
-                  </Typography>
+                    <Typography
+                      align="left"
+                      style={{ color: "grey", fontSize: "14px" }}
+                    >
+                      {bug.created.created_by.name} raised this bug on
+                      {" " + displayDate(bug.created.created_at)}
+                    </Typography>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div>
               <Fab
                 size="medium"
                 variant="extended"
@@ -186,12 +203,14 @@ const Bug = ({ user }) => {
                     transition: "all 200ms ease-in-out",
                   }}
                 >
-                  EDIT BUG
+                  ASSIGN BUG
                 </Typography>
               </Fab>
             </div>
           </div>
-          <Paper style={{ textAlign: "left", margin: "20px 0px" }}>
+          <Paper
+            style={{ textAlign: "left", margin: "20px 0px", minWidth: "50vw" }}
+          >
             <div
               style={{
                 display: "flex",

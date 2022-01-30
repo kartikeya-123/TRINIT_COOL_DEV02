@@ -4,6 +4,7 @@ import axios from "axios";
 import "./Team.css";
 import {
   Avatar,
+  CircularProgress,
   Paper,
   InputBase,
   TableRow,
@@ -18,7 +19,6 @@ import {
 import { SearchRounded } from "@mui/icons-material";
 import AddRounded from "@mui/icons-material/AddRounded";
 import BugModal from "./../Modal/BugModal";
-
 
 const Team = () => {
   const navigate = useNavigate();
@@ -46,10 +46,6 @@ const Team = () => {
   }, []);
 
   useEffect(() => {
-    console.log(show);
-  }, [show]);
-
-  useEffect(() => {
     if (bugs) {
       setShow(bugs);
     }
@@ -60,19 +56,19 @@ const Team = () => {
   };
 
   const closeModal = () => {
-    setShowModal(false)
-  }
+    setShowModal(false);
+  };
 
   const addBug = (bugName, bugDescription) => {
     const data = {
       name: bugName,
       description: bugDescription,
-      team: team.id
+      team: team.id,
     };
     axios
-      .post("/api/v1/bug/team/"+team.id, data)
+      .post("/api/v1/bug/team/" + team.id, data)
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         let oldBugs = [...bugs];
         oldBugs.push(res.data.bug);
         setBugs(oldBugs);
@@ -81,7 +77,46 @@ const Team = () => {
       .catch((err) => {
         console.error(err);
       });
-  }
+  };
+
+  useEffect(() => {
+    if (!searchString || searchString === "") setShow(bugs);
+    else {
+      setShow(
+        bugs.filter((el) =>
+          el.name.toLowerCase().includes(searchString.toLowerCase())
+        )
+      );
+    }
+  }, [searchString]);
+
+  const showName = (name) => {
+    if (searchString === "") return name;
+
+    const pieces = name.toLowerCase().split(searchString.toLowerCase());
+
+    let pos = 0;
+    return pieces.map((piece, index) => {
+      const curr = pos;
+      pos = pos + piece.length + searchString.length;
+      return (
+        <span key={`${name}-${index}`}>
+          {name.substr(curr, piece.length)}
+          {index !== pieces.length - 1 ? (
+            <b style={{ backgroundColor: "lightblue", fontWeight: 500 }}>
+              {name.substr(curr + piece.length, searchString.length)}
+            </b>
+          ) : (
+            ""
+          )}
+        </span>
+      );
+    });
+  };
+
+  useEffect(() => {
+    console.log(show);
+  }, [show]);
 
   return (
     <div>
@@ -153,83 +188,99 @@ const Team = () => {
           }}
         />
       </Paper>
-      <TableContainer
-        component={Paper}
+
+      <div
         style={{
           margin: "50px auto",
-          width: "min(90vw,900px)",
-          borderRadius: "20px",
+          display: "flex",
+          justifyContent: "center",
         }}
       >
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell width={"15px"}></TableCell>
-              <TableCell width={"30%"}>Name</TableCell>
-              <TableCell width={"30%"} >
-                Description
-              </TableCell>
-              <TableCell align="center" width={"10%"}>
-                Status
-              </TableCell>
-              <TableCell align="center" width={"20%"}>
-                Assigned To
-              </TableCell>
-              <TableCell align="center" width={"10%"}>
-                Priority
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {show &&
-              show.map((row) => (
-                <TableRow
-                  key={row.name}
-                  sx={{
-                    "&:last-child td, &:last-child th": { border: 0 },
-                    cursor: "pointer",
-                    transition: "all 150ms ease-in-out",
-                    "&:hover": { backgroundColor: "rgb(240,240,240)" },
-                  }}
-                  onClick={() => {
-                    navigate("/bug/" + row.id);
-                  }}
-                >
-                  <TableCell
-                    style={{
-                      paddingRight: "8px",
-                      paddingTop: "10px",
-                      paddingBottom: "10px",
-                    }}
-                  >
-                    <Avatar>{row.name[0]}</Avatar>
+        {show && show.length > 0 ? (
+          <TableContainer
+            component={Paper}
+            style={{
+              width: "min(90vw,900px)",
+              borderRadius: "20px",
+            }}
+          >
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell width={"15px"}></TableCell>
+                  <TableCell width={"30%"}>Name</TableCell>
+                  <TableCell width={"30%"}>Description</TableCell>
+                  <TableCell align="center" width={"10%"}>
+                    Status
                   </TableCell>
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{
-                      paddingLeft: "16px",
-                    }}
-                  >
-                    {row.name}
+                  <TableCell align="center" width={"20%"}>
+                    Assigned To
                   </TableCell>
-                  <TableCell>
-                    {row.description ? row.description : ""}
-                  </TableCell>
-                  <TableCell align="center">
-                    {row.status ? row.status : ""}
-                  </TableCell>
-                  <TableCell align="center">
-                    {row.assigned ? row.assigned.assigned_to : ""}
-                  </TableCell>
-                  <TableCell align="center">
-                    {row.priority ? row.priority : ""}
+                  <TableCell align="center" width={"10%"}>
+                    Priority
                   </TableCell>
                 </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+              </TableHead>
+              <TableBody>
+                {show &&
+                  show.map((row) => (
+                    <TableRow
+                      key={row.name}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                        cursor: "pointer",
+                        transition: "all 150ms ease-in-out",
+                        "&:hover": { backgroundColor: "rgb(240,240,240)" },
+                      }}
+                      onClick={() => {
+                        navigate("/bug/" + row.id);
+                      }}
+                    >
+                      <TableCell
+                        style={{
+                          paddingRight: "8px",
+                          paddingTop: "10px",
+                          paddingBottom: "10px",
+                        }}
+                      >
+                        <Avatar>{row.name[0]}</Avatar>
+                      </TableCell>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        style={{
+                          paddingLeft: "16px",
+                        }}
+                      >
+                        {showName(row.name)}
+                      </TableCell>
+                      <TableCell>
+                        {row.description ? row.description : ""}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.status ? row.status : ""}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.assigned ? row.assigned.assigned_to : ""}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.priority ? row.priority : ""}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : show ? (
+          <div>
+            <Typography variant="h6">🤷‍♂️ Nothing here ...</Typography>
+          </div>
+        ) : (
+          <div>
+            <CircularProgress />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
