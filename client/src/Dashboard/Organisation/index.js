@@ -15,9 +15,9 @@ import {
   Fab,
   InputBase,
 } from "@mui/material";
-import { SearchRounded, AddRounded } from "@mui/icons-material";
+import { SearchRounded, GroupAddRounded } from "@mui/icons-material";
 
-import TeamModal from "./../Modal/TeamModal.js";
+import TeamModal from "./../Modal/TeamModal";
 
 const Organisation = ({ user }) => {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ const Organisation = ({ user }) => {
     setShowModal(true);
   };
 
-  const close = () => {
+  const closeTeamModal = () => {
     setShowModal(false);
   };
 
@@ -63,7 +63,7 @@ const Organisation = ({ user }) => {
         const old = { ...org };
         old.teams.push(newteam);
         setOrg(old);
-        close();
+        closeTeamModal();
       })
       .catch((err) => {
         console.error(err);
@@ -110,15 +110,14 @@ const Organisation = ({ user }) => {
   if (show)
     return (
       <div>
-        <TeamModal show={showModal} close={close} add={addTeam} />
+        <TeamModal show={showModal} close={closeTeamModal} add={addTeam} />
+
         <Typography variant="h4" align="left">
           {org.name}
         </Typography>
 
         {user.id === org.creator ? (
-          <div
-            style={{ display: "flex", justifyContent: "flex-end", gap: "30px" }}
-          >
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <Fab
               size="medium"
               variant="extended"
@@ -134,7 +133,7 @@ const Organisation = ({ user }) => {
               }}
               onClick={showTeamModal}
             >
-              <AddRounded
+              <GroupAddRounded
                 style={{ transform: "translateX(calc(0.5em - 15px))" }}
               />
               <Typography
@@ -146,36 +145,6 @@ const Organisation = ({ user }) => {
                 }}
               >
                 NEW TEAM
-              </Typography>
-            </Fab>
-            <Fab
-              size="medium"
-              variant="extended"
-              sx={{
-                height: "48px",
-                width: "48px",
-                transition: "all 200ms ease-in-out",
-                "&:hover": { width: "140px" },
-                "&:hover .fab-text": { opacity: "1 !important" },
-                flexWrap: "nowrap",
-                overflow: "hidden",
-                justifyContent: "flex-start",
-              }}
-              onClick={showTeamModal}
-              color="primary"
-            >
-              <AddRounded
-                style={{ transform: "translateX(calc(0.5em - 15px))" }}
-              />
-              <Typography
-                className="fab-text"
-                style={{
-                  whiteSpace: "nowrap",
-                  opacity: 0,
-                  transition: "all 200ms ease-in-out",
-                }}
-              >
-                NEW MEMBER
               </Typography>
             </Fab>
           </div>

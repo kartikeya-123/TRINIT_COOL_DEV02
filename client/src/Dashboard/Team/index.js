@@ -17,9 +17,10 @@ import {
   Typography,
   Chip,
 } from "@mui/material";
-import { SearchRounded } from "@mui/icons-material";
+import { SearchRounded, PersonAddAltRounded } from "@mui/icons-material";
 import AddRounded from "@mui/icons-material/AddRounded";
 import BugModal from "./../Modal/BugModal";
+import MemberModal from "./../Modal/AddMember";
 
 const Team = () => {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const Team = () => {
   const [team, setTeam] = useState(null);
   const [show, setShow] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [memberModal, setMemberModal] = useState(false);
   const [searchString, setSearchString] = useState("");
 
   useEffect(() => {
@@ -60,6 +62,14 @@ const Team = () => {
     setShowModal(false);
   };
 
+  const showMemberModal = () => {
+    setMemberModal(true);
+  };
+
+  const closeMemberModal = () => {
+    setMemberModal(false);
+  };
+
   const addBug = (bugName, bugDescription) => {
     const data = {
       name: bugName,
@@ -79,6 +89,8 @@ const Team = () => {
         console.error(err);
       });
   };
+
+  const addMember = () => {};
 
   useEffect(() => {
     if (!searchString || searchString === "") setShow(bugs);
@@ -122,6 +134,11 @@ const Team = () => {
   return (
     <div>
       <BugModal show={showModal} close={closeModal} add={addBug} />
+      <MemberModal
+        show={memberModal}
+        close={closeMemberModal}
+        add={addMember}
+      />
       <div className="teamName">
         <h2>{team !== null ? team.name : ""}</h2>
       </div>
@@ -134,6 +151,7 @@ const Team = () => {
           justifyContent: "flex-end",
           marginTop: "12px",
           marginBottom: "12px",
+          gap: "20px",
         }}
       >
         <Fab
@@ -161,6 +179,36 @@ const Team = () => {
             }}
           >
             NEW BUG
+          </Typography>
+        </Fab>
+        <Fab
+          size="medium"
+          variant="extended"
+          sx={{
+            height: "48px",
+            width: "48px",
+            transition: "all 200ms ease-in-out",
+            "&:hover": { width: "160px" },
+            "&:hover .fab-text": { opacity: "1 !important" },
+            flexWrap: "nowrap",
+            overflow: "hidden",
+            justifyContent: "flex-start",
+          }}
+          onClick={showMemberModal}
+          color="primary"
+        >
+          <PersonAddAltRounded
+            style={{ transform: "translateX(calc(0.5em - 15px))" }}
+          />
+          <Typography
+            className="fab-text"
+            style={{
+              whiteSpace: "nowrap",
+              opacity: 0,
+              transition: "all 200ms ease-in-out",
+            }}
+          >
+            Add Member
           </Typography>
         </Fab>
       </div>

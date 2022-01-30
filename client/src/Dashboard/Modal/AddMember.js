@@ -17,16 +17,12 @@ import {
   Stack,
 } from "@mui/material";
 
-export default function FormDialog({ show, close, add }) {
+export default function FormDialog({ show, close, add, roles }) {
   const [values, setValues] = useState({
     name: "",
     description: "",
-    highRoles: [],
-    lowRoles: [],
+    roles: [],
   });
-
-  const [roleHigh, setRoleHigh] = useState("");
-  const [roleLow, setRoleLow] = useState("");
 
   const handleSubmit = () => {
     // add(values);
@@ -66,124 +62,23 @@ export default function FormDialog({ show, close, add }) {
     });
   };
 
-  const handleHigh = (event) => {
-    if (roleHigh.length === 0) return;
-    let roles = values.highRoles;
-    roles.push(roleHigh);
-    setValues({ ...values, highRoles: roles });
-    setRoleHigh("");
-  };
-
-  const handleLow = (event) => {
-    console.log(roleLow);
-    if (roleLow.length === 0) return;
-    let roles = values.lowRoles;
-    roles.push(roleLow);
-    setValues({ ...values, lowRoles: roles });
-    setRoleLow("");
-  };
-
   return (
     <div>
       <Dialog open={show} onClose={handleClose}>
-        <DialogTitle>Create new team</DialogTitle>
+        <DialogTitle>Add new member</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
-            id="name"
-            name="name"
-            label="Name"
+            id="email"
+            name="email"
+            label="Email"
             type="text"
             fullWidth
             variant="standard"
-            value={values.name}
+            value={values.email}
             onChange={handleChange}
           />
-          <TextField
-            autoFocus
-            margin="dense"
-            name="description"
-            id="description"
-            label="Description"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={values.description}
-            onChange={handleChange}
-          />
-          <div>
-            <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
-              <InputLabel>Add high priority roles</InputLabel>
-              <OutlinedInput
-                autoFocus
-                margin="dense"
-                name="description"
-                id="description"
-                label="Add high priority roles"
-                type="text"
-                fullWidth
-                variant="standard"
-                value={roleHigh}
-                onChange={(event) => setRoleHigh(event.target.value)}
-                style={{ marginTop: "10px" }}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton edge="end" color="primary" onClick={handleHigh}>
-                      <DoneIcon />
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <Stack direction="row" spacing={1}>
-              {values.highRoles &&
-                values.highRoles.map((role, index) => (
-                  <Chip
-                    label={role}
-                    key={index}
-                    color="primary"
-                    variant="outlined"
-                  />
-                ))}
-            </Stack>
-          </div>
-          <div>
-            <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
-              <InputLabel>Add low priority roles</InputLabel>
-              <OutlinedInput
-                autoFocus
-                margin="dense"
-                name="description"
-                id="description"
-                label="Add low priority roles"
-                type="text"
-                fullWidth
-                variant="standard"
-                value={roleLow}
-                onChange={(event) => setRoleLow(event.target.value)}
-                style={{ marginTop: "10px" }}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton edge="end" color="primary" onClick={handleLow}>
-                      <DoneIcon />
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <Stack direction="row" spacing={1}>
-              {values.lowRoles &&
-                values.lowRoles.map((role, index) => (
-                  <Chip
-                    label={role}
-                    key={index}
-                    color="primary"
-                    variant="outlined"
-                  />
-                ))}
-            </Stack>
-          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
