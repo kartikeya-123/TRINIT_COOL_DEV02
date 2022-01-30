@@ -23,8 +23,8 @@ exports.aboutMe = catchAsync(async (req, res, next) => {
     status: "suceess",
     user: user,
     stats: {
-      assigned: assigned.length,
-      resolved: resolved.length,
+      assigned: assigned,
+      resolved: resolved,
     },
   });
 });
