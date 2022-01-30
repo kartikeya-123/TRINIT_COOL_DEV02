@@ -5,6 +5,7 @@ import axios from "axios";
 // @material-ui/core components
 
 import { Box, Button, Card, CardHeader, Grid } from "@mui/material";
+import googleLogo from "./google.svg";
 // import { makeStyles } from "@material-ui/core/styles";
 // import { useTheme } from "@material-ui/core/styles";
 // import Box from "@material-ui/core/Box";
@@ -75,18 +76,26 @@ const Login = ({ sucessLogin, load }) => {
   };
 
   return (
-    <>
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <Grid item xs={12} lg={5} md={7}>
         <Card>
           <CardHeader
             title={
               <Box
-                fontSize="80%"
+                fontSize="100%"
                 fontWeight="400"
                 component="small"
                 color="grey"
               >
-                Sign in with your gmail account
+                Log in with your google account
               </Box>
             }
             titleTypographyProps={{
@@ -107,17 +116,19 @@ const Login = ({ sucessLogin, load }) => {
                       //   classes={{ root: classes.buttonRoot }}
                       onClick={renderProps.onClick}
                     >
-                      <Box component="span" marginRight="4px">
-                        {/* <Box
+                      <Box
+                        component="span"
+                        marginRight="4px"
+                        style={{ display: "flex", alignItems: "center" }}
+                      >
+                        <Box
                           alt="..."
                           component="img"
                           width="20px"
-                        //   className={classes.buttonImg}
-                          src={
-                            require("assets/img/icons/common/google.svg")
-                              .default
-                          }
-                        ></Box> */}
+                          //   className={classes.buttonImg}
+                          style={{ filter: "brightness(0) invert(1)" }}
+                          src={googleLogo}
+                        ></Box>
                       </Box>
                       <Box component="span" marginLeft=".75rem">
                         Google
@@ -128,7 +139,6 @@ const Login = ({ sucessLogin, load }) => {
                   onSuccess={successResponseGoogle}
                   onFailure={failureResponseGoogle}
                   cookiePolicy={"single_host_origin"}
-                  icon={false}
                   padding={100}
                 />
               </Box>
@@ -136,7 +146,7 @@ const Login = ({ sucessLogin, load }) => {
           ></CardHeader>
         </Card>
       </Grid>
-    </>
+    </div>
   );
 };
 
