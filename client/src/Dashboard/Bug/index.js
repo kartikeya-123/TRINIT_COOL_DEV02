@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import './Bug.css';
+import "./Bug.css";
 import {
   Avatar,
   Chip,
@@ -8,9 +8,9 @@ import {
   Divider,
   Paper,
   Typography,
-  Fab
+  Fab,
 } from "@mui/material";
-import ModeEditRoundedIcon from '@mui/icons-material/ModeEditRounded';
+import ModeEditRoundedIcon from "@mui/icons-material/ModeEditRounded";
 import AssignModal from "../Modal/AssignModal";
 import {
   BugReportRounded,
@@ -37,9 +37,8 @@ const Bug = ({ user }) => {
   const [bug, setBug] = useState(null);
   const [team, setTeam] = useState(null);
   const [assignedTo, setAssignedTo] = useState(null);
-  const [priority, setPriority] = useState('');
+  const [priority, setPriority] = useState("");
   const [showModal, setShowModal] = useState(false);
-
 
   const displayDate = (date) => {
     const d = new Date(date);
@@ -63,12 +62,12 @@ const Bug = ({ user }) => {
 
   useEffect(() => {
     if (bug !== null) {
-      setAssignedTo(bug.assigned ? bug.assigned.assigned_to : "")
-      setPriority(bug.priority ? bug.priority : "")
-      const id = bug.team
+      setAssignedTo(bug.assigned ? bug.assigned.assigned_to : "");
+      setPriority(bug.priority ? bug.priority : "");
+      const id = bug.team;
       axios
         .get("/api/v1/team/" + id, {
-          withCredentials: true
+          withCredentials: true,
         })
         .then((res) => {
           setTeam(res.data.team);
@@ -85,29 +84,29 @@ const Bug = ({ user }) => {
   };
 
   const closeModal = () => {
-    setShowModal(false)
-  }
+    setShowModal(false);
+  };
 
   const addBug = (assignedToEmail, priorityBug) => {
     const data = {
       email: assignedToEmail,
-      priority: priorityBug
-      // team: team.id 
+      priority: priorityBug,
+      // team: team.id
     };
-    console.log(data)
+    console.log(data);
     axios
-      .patch("/api/v1/bug/assign/"+bug.id, data)
+      .patch("/api/v1/bug/assign/" + bug.id, data)
       .then((res) => {
         // let oldBugs = [...bugs];
         // oldBugs.push(res.data.bugs);
         setBug(res.data.bug);
-        console.log(res.data)
+        console.log(res.data);
         closeModal();
       })
       .catch((err) => {
         console.error(err);
       });
-  }
+  };
 
   if (bug)
     return (
@@ -115,13 +114,21 @@ const Bug = ({ user }) => {
         <AssignModal show={showModal} close={closeModal} add={addBug} />
         <div style={{ textAlign: "left" }}>
           <div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              alignItems: 'center'
-            }}>
-              <div style={{ display: "flex", flexDirection:'column', justifyContent:'start' }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "start",
+                }}
+              >
                 <Typography variant="h4" align="left">
                   {bug.name}
                 </Typography>
@@ -141,25 +148,43 @@ const Bug = ({ user }) => {
                       bug.status === "raised"
                         ? "primary"
                         : bug.status === "assigned"
-                          ? "warning"
-                          : "success"
+                        ? "warning"
+                        : "success"
                     }
                     size="small"
                   />
-                  {bug.priority ?
+                  {bug.priority ? (
                     <Chip
                       label={bug.priority + " Priority"}
                       size="small"
                       style={{
-                        marginLeft: '6px',
-                        backgroundColor: bug.priority === "high"
-                          ? "red"
-                          : bug.status === "medium"
+                        marginLeft: "6px",
+                        backgroundColor:
+                          bug.priority === "high"
+                            ? "red"
+                            : bug.status === "medium"
                             ? "orange"
-                            : "green"
+                            : "green",
                       }}
                     />
-                    : null}
+                  ) : null}
+                  {bug.assigned ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "5px 0px",
+                      }}
+                    >
+                      <Typography
+                        align="left"
+                        style={{ color: "grey", fontSize: "14px" }}
+                      >
+                        {bug.assigned.assigned_To.name} was assigned on
+                        {" " + displayDate(bug.assigned.assigned_at)}
+                      </Typography>
+                    </div>
+                  ) : null}
                   <div
                     style={{
                       display: "flex",

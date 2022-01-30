@@ -52,10 +52,21 @@ exports.resolveBug = catchAsync(async (req, res, next) => {
 });
 
 exports.getBug = catchAsync(async (req, res, next) => {
-  const bug = await Bug.findById(req.params.bugId).populate({
-    path: "created.created_by",
-    ref: "User",
-  });
+  const bug = await Bug.findById(req.params.bugId)
+    .populate({
+      path: "created.created_by",
+      ref: "User",
+    })
+    .populate({
+      path: "assigned.assigned_To",
+      model: "User",
+      select: "name",
+    })
+    .populate({
+      path: "resolved.resolved_by",
+      model: "User",
+      select: "name",
+    });
 
   res.status(200).json({ status: "success", bug });
 });
