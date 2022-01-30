@@ -72,7 +72,6 @@ const verifyJwtToken = catchAsync(async (req, res, next) => {
 
 const loggedInUser = catchAsync(async (req, res, next) => {
   const currentUser = await User.findById(req.jwtPayload.id);
-  console.log(currentUser);
   if (!currentUser) {
     return next(
       new AppError(

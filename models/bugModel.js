@@ -22,7 +22,7 @@ const bugSchema = new mongoose.Schema(
     team: {
       type: mongoose.Schema.ObjectId,
       ref: "Team",
-      required,
+      required: [true, "A bug should have team"],
     },
     created: {
       created_by: {

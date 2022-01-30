@@ -5,6 +5,7 @@ import BugReportIcon from "@mui/icons-material/BugReport";
 import axios from "axios";
 import Modal from "./../Modal/Modal";
 import { AddRounded } from "@mui/icons-material";
+import colors from "./../assets/colors.js";
 
 const Profile = ({ user }) => {
   return (
@@ -45,6 +46,36 @@ const ProfileDetails = (props) => {
     </div>
   );
 };
+
+function stringToColor(string) {
+  let hash = 0;
+  let i;
+
+  /* eslint-disable no-bitwise */
+  for (i = 0; i < string.length; i += 1) {
+    hash = string.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  let color = "#";
+
+  for (i = 0; i < 3; i += 1) {
+    const value = (hash >> (i * 8)) & 0xff;
+    color += `00${value.toString(16)}`.substr(-2);
+  }
+  /* eslint-enable no-bitwise */
+
+  return color;
+}
+
+function stringAvatar(name) {
+  console.log(name);
+  return {
+    sx: {
+      bgcolor: stringToColor(name),
+    },
+    children: `${name[0]}${name[1]}`,
+  };
+}
 
 const ProfileStats = ({ orgs, ...props }) => {
   const [organisations, setOrganisations] = useState(orgs);
@@ -110,7 +141,9 @@ const ProfileStats = ({ orgs, ...props }) => {
         </div>
         <Grid container spacing={2} alignItems="stretch">
           {organisations &&
-            organisations.map((org) => {
+            organisations.map((org, index) => {
+              const ind = Math.floor(Math.random() * 100) % colors.length;
+              console.log(ind);
               return (
                 <Grid
                   item
@@ -120,6 +153,7 @@ const ProfileStats = ({ orgs, ...props }) => {
                     alignItems: "center",
                     justifyContent: "center",
                   }}
+                  key={index}
                 >
                   <Card
                     style={{
@@ -137,15 +171,12 @@ const ProfileStats = ({ orgs, ...props }) => {
                         width: "80px",
                         height: "80px",
                       }}
+                      sx={{
+                        bgcolor: colors[ind].bgColor,
+                        color: colors[ind].color,
+                      }}
                     >
-                      <p
-                        style={{
-                          fontSize: "2em",
-                          margin: 0,
-                        }}
-                      >
-                        {org.name[0]}
-                      </p>
+                      {org.name[0]}
                     </Avatar>
                     <p
                       style={{

@@ -1,5 +1,7 @@
 const User = require("./../models/userModel");
 const Organisation = require("./../models/organisationModel");
+const Bug = require("./../models/bugModel");
+
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 // const { sendEmail } = require("../utils/sendEmail");
@@ -13,9 +15,15 @@ exports.aboutMe = catchAsync(async (req, res, next) => {
     path: "organisations",
     model: "Organisation",
   });
+
+  const assigned = await Bug.find({ assigned: { assigned_by: req.user.id } });
+  const resolved = await Bug.find({ resolved: { resolved_by: req.user.id } });
+
   res.status(200).json({
     status: "suceess",
     user: user,
+    assigned: assigned.length,
+    resolved: resolved.length,
   });
 });
 
