@@ -250,7 +250,7 @@ const Bug = ({ user }) => {
               {bug.description}
             </div>
           </Paper>
-          <div style={{
+          {bug.status!=='resolved' ? <div style={{
             // width:'100%',
             display: 'flex',
             justifyContent: 'center',
@@ -259,7 +259,7 @@ const Bug = ({ user }) => {
             <Button style={{
               fontSize:'20px'
             }} onClick={closeBug}>Close Bug</Button>
-          </div>
+          </div> : null}
         </div>
       </div>
     );
