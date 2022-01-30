@@ -1,0 +1,9 @@
+.teamName{
+    display: flex;
+    justify-content: start;
+}
+
+.teamName h2{
+    margin-top: 8px;
+    font-size: 28px;
+}
