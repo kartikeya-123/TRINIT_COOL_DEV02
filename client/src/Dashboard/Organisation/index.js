@@ -219,7 +219,7 @@ const Organisation = ({ user }) => {
             <TableHead>
               <TableRow>
                 <TableCell width={"20px"}></TableCell>
-                <TableCell>Name</TableCell>
+                <TableCell>Team</TableCell>
                 <TableCell>Description</TableCell>
                 <TableCell align="center">Members</TableCell>
               </TableRow>
