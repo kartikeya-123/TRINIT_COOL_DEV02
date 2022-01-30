@@ -196,7 +196,7 @@ const Bug = ({ user }) => {
                         style={{ color: "grey", fontSize: "14px" }}
                       >
                         {bug.assigned.assigned_To.name} was assigned on
-                        {" " + displayDate(bug.assigned.assigned_at)}
+                        {" " + displayDate(bug.created.created_at)}
                       </Typography>
                     </div>
                   ) : null}
