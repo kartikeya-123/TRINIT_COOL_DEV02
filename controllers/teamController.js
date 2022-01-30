@@ -138,22 +138,22 @@ exports.getTeam = catchAsync(async (req, res, next) => {
       //Not a member of team
       const resolvedBugs = await Bug.find({ team: teamId, status: "resolved" });
       const userBugs = await Bug.find({ created: { created_by: req.user.id } });
-      res.status(200).json({
-        team,
-        resolvedBugs,
-        userBugs,
-      });
-    } else {
-      // Member of a team
-      const bugs = await Bug.find({ team: teamId });
-      const resolvedBugs = await Bug.find({ team: teamId, status: "resolved" });
-      const userBugs = await Bug.find({ created: { created_by: req.user.id } });
+
+      const bugs = [resolvedBugs, userBugs];
 
       res.status(200).json({
         team,
         bugs,
-        resolvedBugs,
-        userBugs,
+      });
+    } else {
+      // Member of a team
+      const bugs = await Bug.find({ team: teamId });
+      //   const resolvedBugs = await Bug.find({ team: teamId, status: "resolved" });
+      //   const userBugs = await Bug.find({ created: { created_by: req.user.id } });
+
+      res.status(200).json({
+        team,
+        bugs,
       });
     }
   }

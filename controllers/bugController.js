@@ -8,17 +8,16 @@ exports.createBug = catchAsync(async (req, res, next) => {
   const data = {
     name: req.body.name,
     description: req.body.description,
-    team: req.body.teamId,
-    priority: req.body.priority,
-    status: "assigned",
+    team: req.params.teamId,
+    status: "raised",
     created: {
       created_by: req.user.id,
     },
   };
 
   const bug = await Bug.create(data);
-  await Team.findByIdAndUpdate(req.body.teamId, { $push: { bugs: bug.id } });
-  res.status(bug).json({
+  await Team.findByIdAndUpdate(req.params.teamId, { $push: { bugs: bug.id } });
+  res.status(200).json({
     status: "success",
     bug: bug,
   });
