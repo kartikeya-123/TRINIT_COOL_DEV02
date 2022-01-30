@@ -29,6 +29,7 @@ The organisation page consists of all the teams that are part of the organisatio
 
 ### Profile
 ![image](https://user-images.githubusercontent.com/59505795/151692669-79b988d5-36cd-40c3-ae4f-63d3a62908d2.png)
+
 Click on profile to view the profile screen.
 The profile page consists of the details of the user and the organisations that he/she is currently a part of.
 <img width="937" alt="image" src="https://user-images.githubusercontent.com/56500864/151692981-8638a196-279f-4dab-98fe-786864d5252a.png">
