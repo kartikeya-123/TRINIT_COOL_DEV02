@@ -39,6 +39,41 @@ const Home = () => {
       });
   }, []);
 
+  const showName = (name) => {
+    if (searchString === "") return name;
+
+    const pieces = name.toLowerCase().split(searchString.toLowerCase());
+
+    let pos = 0;
+    return pieces.map((piece, index) => {
+      const curr = pos;
+      pos = pos + piece.length + searchString.length;
+      return (
+        <span key={`${name}-${index}`}>
+          {name.substr(curr, piece.length)}
+          {index !== pieces.length - 1 ? (
+            <b style={{ backgroundColor: "lightblue", fontWeight: 500 }}>
+              {name.substr(curr + piece.length, searchString.length)}
+            </b>
+          ) : (
+            ""
+          )}
+        </span>
+      );
+    });
+  };
+
+  useEffect(() => {
+    if (!searchString || searchString === "") setShow(org);
+    else {
+      setShow(
+        org.filter((el) =>
+          el.name.toLowerCase().includes(searchString.toLowerCase())
+        )
+      );
+    }
+  }, [searchString]);
+
   const getMembers = (teams) => {
     let m = new Set();
     teams.forEach((team) => {
@@ -50,6 +85,7 @@ const Home = () => {
     if (m.size) return m.size;
     return 1;
   };
+
   return (
     <div>
       <div>
@@ -100,7 +136,7 @@ const Home = () => {
               {show &&
                 show.map((row) => (
                   <TableRow
-                    key={row.name}
+                    key={row.id}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                       cursor: "pointer",
@@ -127,7 +163,7 @@ const Home = () => {
                         paddingLeft: "5px",
                       }}
                     >
-                      {row.name}
+                      {showName(row.name)}
                     </TableCell>
                     <TableCell align="center">
                       {row.teams ? getMembers(row.teams) : 1}

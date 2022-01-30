@@ -8,6 +8,11 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+import {
+  BugReportRounded,
+  AlbumRounded,
+  CheckRounded,
+} from "@mui/icons-material";
 
 const month = [
   "Jan",
@@ -56,6 +61,15 @@ const Bug = ({ user }) => {
           <div style={{ display: "flex", alignItems: "center" }}>
             <Chip
               label={bug.status}
+              icon={
+                bug.status === "raised" ? (
+                  <BugReportRounded />
+                ) : bug.status === "assigned" ? (
+                  <AlbumRounded />
+                ) : (
+                  <CheckRounded />
+                )
+              }
               color={
                 bug.status === "raised"
                   ? "primary"
@@ -81,7 +95,9 @@ const Bug = ({ user }) => {
               </Typography>
             </div>
           </div>
-          <Paper style={{ textAlign: "left", margin: "20px 0px" }}>
+          <Paper
+            style={{ textAlign: "left", margin: "20px 0px", minWidth: "50vw" }}
+          >
             <div
               style={{
                 display: "flex",

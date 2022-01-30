@@ -19,7 +19,6 @@ import { SearchRounded } from "@mui/icons-material";
 import AddRounded from "@mui/icons-material/AddRounded";
 import BugModal from "./../Modal/BugModal";
 
-
 const Team = () => {
   const navigate = useNavigate();
 
@@ -60,19 +59,19 @@ const Team = () => {
   };
 
   const closeModal = () => {
-    setShowModal(false)
-  }
+    setShowModal(false);
+  };
 
   const addBug = (bugName, bugDescription) => {
     const data = {
       name: bugName,
       description: bugDescription,
-      team: team.id
+      team: team.id,
     };
     axios
-      .post("/api/v1/bug/team/"+team.id, data)
+      .post("/api/v1/bug/team/" + team.id, data)
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         let oldBugs = [...bugs];
         oldBugs.push(res.data.bug);
         setBugs(oldBugs);
@@ -81,7 +80,42 @@ const Team = () => {
       .catch((err) => {
         console.error(err);
       });
-  }
+  };
+
+  useEffect(() => {
+    if (!searchString || searchString === "") setShow(bugs);
+    else {
+      setShow(
+        bugs.filter((el) =>
+          el.name.toLowerCase().includes(searchString.toLowerCase())
+        )
+      );
+    }
+  }, [searchString]);
+
+  const showName = (name) => {
+    if (searchString === "") return name;
+
+    const pieces = name.toLowerCase().split(searchString.toLowerCase());
+
+    let pos = 0;
+    return pieces.map((piece, index) => {
+      const curr = pos;
+      pos = pos + piece.length + searchString.length;
+      return (
+        <span key={`${name}-${index}`}>
+          {name.substr(curr, piece.length)}
+          {index !== pieces.length - 1 ? (
+            <b style={{ backgroundColor: "lightblue", fontWeight: 500 }}>
+              {name.substr(curr + piece.length, searchString.length)}
+            </b>
+          ) : (
+            ""
+          )}
+        </span>
+      );
+    });
+  };
 
   return (
     <div>
@@ -166,9 +200,7 @@ const Team = () => {
             <TableRow>
               <TableCell width={"15px"}></TableCell>
               <TableCell width={"30%"}>Name</TableCell>
-              <TableCell width={"30%"} >
-                Description
-              </TableCell>
+              <TableCell width={"30%"}>Description</TableCell>
               <TableCell align="center" width={"10%"}>
                 Status
               </TableCell>
@@ -211,7 +243,7 @@ const Team = () => {
                       paddingLeft: "16px",
                     }}
                   >
-                    {row.name}
+                    {showName(row.name)}
                   </TableCell>
                   <TableCell>
                     {row.description ? row.description : ""}

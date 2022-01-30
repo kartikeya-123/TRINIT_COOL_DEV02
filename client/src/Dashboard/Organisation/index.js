@@ -13,8 +13,10 @@ import {
   TableHead,
   Paper,
   Fab,
+  InputBase,
 } from "@mui/material";
-import AddRounded from "@mui/icons-material/AddRounded";
+import { SearchRounded, AddRounded } from "@mui/icons-material";
+
 import TeamModal from "./../Modal/TeamModal.js";
 
 const Organisation = ({ user }) => {
@@ -23,10 +25,11 @@ const Organisation = ({ user }) => {
   const [org, setOrg] = useState(null);
   const [show, setShow] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [searchString, setSearchString] = useState("");
 
   useEffect(() => {
     if (org) {
-      setShow(org);
+      setShow(org.teams);
     }
   }, [org]);
 
@@ -67,12 +70,49 @@ const Organisation = ({ user }) => {
       });
   };
 
+  const showName = (name) => {
+    if (searchString === "") return name;
+
+    const pieces = name.toLowerCase().split(searchString.toLowerCase());
+
+    let pos = 0;
+    return pieces.map((piece, index) => {
+      const curr = pos;
+      pos = pos + piece.length + searchString.length;
+      return (
+        <span key={`${name}-${index}`}>
+          {name.substr(curr, piece.length)}
+          {index !== pieces.length - 1 ? (
+            <b style={{ backgroundColor: "lightblue", fontWeight: 500 }}>
+              {name.substr(curr + piece.length, searchString.length)}
+            </b>
+          ) : (
+            ""
+          )}
+        </span>
+      );
+    });
+  };
+
+  useEffect(() => {
+    if (!org) return;
+
+    if (!searchString || searchString === "") setShow(org.teams);
+    else {
+      setShow(
+        org.teams.filter((el) =>
+          el.name.toLowerCase().includes(searchString.toLowerCase())
+        )
+      );
+    }
+  }, [searchString]);
+
   if (show)
     return (
       <div>
         <TeamModal show={showModal} close={close} add={addTeam} />
         <Typography variant="h4" align="left">
-          {show.name}
+          {org.name}
         </Typography>
 
         {user.id === org.creator ? (
@@ -141,6 +181,32 @@ const Organisation = ({ user }) => {
           </div>
         ) : null}
 
+        <Paper
+          style={{
+            display: "flex",
+            alignItems: "center",
+            borderRadius: "20px",
+            height: "40px",
+            width: "min(90vw, 400px)",
+            boxSizing: "border-box",
+            margin: "30px auto 0px",
+            padding: "0px 10px",
+          }}
+        >
+          <SearchRounded style={{ paddingRight: "10px" }} />
+          <InputBase
+            placeholder="Search teams"
+            autoFocus
+            value={searchString}
+            onChange={({ target }) => {
+              let text = target.value;
+              text = text.trimStart();
+
+              setSearchString(text);
+            }}
+          />
+        </Paper>
+
         <TableContainer
           component={Paper}
           style={{
@@ -160,7 +226,7 @@ const Organisation = ({ user }) => {
             </TableHead>
             <TableBody>
               {show &&
-                show.teams.map((team) => (
+                show.map((team) => (
                   <TableRow
                     key={team.name}
                     sx={{
@@ -189,7 +255,7 @@ const Organisation = ({ user }) => {
                         paddingLeft: "5px",
                       }}
                     >
-                      {team.name}
+                      {showName(team.name)}
                     </TableCell>
                     <TableCell
                       align="left"
