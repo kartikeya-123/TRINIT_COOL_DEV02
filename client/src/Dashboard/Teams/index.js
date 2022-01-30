@@ -39,8 +39,8 @@ const Team = () => {
     }, []);
 
     useEffect(() => {
-        console.log(team);
-    }, [team]);
+        console.log(show);
+    }, [show]);
 
     useEffect(() => {
         if (bugs) {
@@ -52,6 +52,9 @@ const Team = () => {
         <div>
             <div className="teamName">
                 <h2>{team !== null ? team.name : ""}</h2>
+            </div>
+            <div className="teamDescription">
+                {team !== null ? team.description : ""}
             </div>
             <Paper
                 style={{
@@ -89,8 +92,8 @@ const Team = () => {
                 <Table aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            {/* <TableCell width={"20px"}></TableCell> */}
-                            <TableCell width={"30%"} align="center">Name</TableCell>
+                            <TableCell width={"15px"}></TableCell>
+                            <TableCell width={"30%"}>Name</TableCell>
                             <TableCell width={"30%"} align="center">Description</TableCell>
                             <TableCell align="center" width={"10%"}>Status</TableCell>
                             <TableCell align="center" width={"20%"}>Assigned To</TableCell>
@@ -98,9 +101,53 @@ const Team = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {/* {show && 
-
-                        } */}
+                        {show &&
+                            show.map((row) => (
+                                <TableRow
+                                    key={row.name}
+                                    sx={{
+                                        "&:last-child td, &:last-child th": { border: 0 },
+                                        cursor: "pointer",
+                                        transition: "all 150ms ease-in-out",
+                                        "&:hover": { backgroundColor: "rgb(240,240,240)" },
+                                    }}
+                                    onClick={() => {
+                                        // navigate("/org/" + row.id);
+                                    }}
+                                >
+                                    <TableCell
+                                        style={{
+                                            paddingRight: "8px",
+                                            paddingTop: "10px",
+                                            paddingBottom: "10px",
+                                        }}
+                                    >
+                                        <Avatar>{row.name[0]}</Avatar>
+                                    </TableCell>
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        style={{
+                                            paddingLeft: "16px",
+                                        }}
+                                    >
+                                        {row.name}
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        {row.description ? row.description : ""}
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        {row.status ? row.status : ""}
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        {row.assigned ? row.assigned.assigned_to : ""}
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        {row.priority ? row.priority : ""}
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        }
                     </TableBody>
                 </Table>
             </TableContainer>
