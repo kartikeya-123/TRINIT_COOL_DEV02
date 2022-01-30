@@ -179,6 +179,7 @@ const ProfileStats = ({ orgs, ...props }) => {
                       flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
+                      cursor: "pointer"
                     }}
 
                     onClick={() => {

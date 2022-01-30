@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { SearchRounded } from "@mui/icons-material";
 import AddRounded from "@mui/icons-material/AddRounded";
+import BugModal from "./../Modal/BugModal";
 
 
 const Team = () => {
@@ -24,6 +25,7 @@ const Team = () => {
     const [bugs, setBugs] = useState(null);
     const [team, setTeam] = useState(null);
     const [show, setShow] = useState(null);
+    const [showModal, setShowModal] = useState(false);
     const [searchString, setSearchString] = useState("");
 
     useEffect(() => {
@@ -52,15 +54,43 @@ const Team = () => {
         }
     }, [bugs]);
 
+    const showBugModal = () => {
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false)
+    }
+
+    const addBug = (bugName, bugDescription) => {
+        const data = {
+            name: bugName,
+            description: bugDescription,
+            team: team.id 
+        };
+        axios
+            .post("/api/v1/bug/create", data)
+            .then((res) => {
+                let oldBugs = [...bugs];
+                oldBugs.push(res.data.bugs);
+                setBugs(oldBugs);
+                closeModal();
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }
+
     return (
         <div>
+            <BugModal show={showModal} close={closeModal} add={addBug} />
             <div className="teamName">
                 <h2>{team !== null ? team.name : ""}</h2>
             </div>
             <div className="teamDescription">
                 {team !== null ? team.description : ""}
             </div>
-            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "12px",marginBottom:"12px" }}>
+            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "12px", marginBottom: "12px" }}>
                 <Fab
                     size="medium"
                     variant="extended"
@@ -74,6 +104,7 @@ const Team = () => {
                         overflow: "hidden",
                         justifyContent: "flex-start",
                     }}
+                    onClick={showBugModal}
                 >
                     <AddRounded
                         style={{ transform: "translateX(calc(0.5em - 15px))" }}
