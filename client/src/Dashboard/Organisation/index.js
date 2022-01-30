@@ -3,81 +3,81 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
-  Paper,
-  InputBase,
-  TableRow,
+  CircularProgress,
+  Typography,
   Table,
-  TableCell,
   TableBody,
   TableContainer,
+  TableRow,
+  TableCell,
   TableHead,
+  Paper,
+  Fab,
 } from "@mui/material";
-import { SearchRounded } from "@mui/icons-material";
+import AddRounded from "@mui/icons-material/AddRounded";
 
-const Home = () => {
+const Organisation = () => {
   const navigate = useNavigate();
 
   const [org, setOrg] = useState(null);
   const [show, setShow] = useState(null);
-  const [searchString, setSearchString] = useState("");
 
   useEffect(() => {
-    console.log(org);
-    if (org) setShow(org);
+    if (org) {
+      console.log(org);
+      setShow(org);
+    }
   }, [org]);
 
   useEffect(() => {
+    const id = window.location.pathname.split("/")[2];
     axios
-      .get("api/v1/organisation/all", {
-        withCredentials: true,
-      })
+      .get("/api/v1/organisation/" + id)
       .then((res) => {
-        setOrg(res.data.organisations);
+        setOrg(res.data.organisation);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-  const getMembers = (teams) => {
-    let m = new Set();
-    teams.forEach((team) => {
-      team.members.forEach((member) => {
-        m.add(member.userId);
-      });
-    });
-
-    if (m.size) return m.size;
-    return 1;
-  };
-  return (
-    <div>
+  if (show)
+    return (
       <div>
-        <Paper
-          style={{
-            display: "flex",
-            alignItems: "center",
-            borderRadius: "20px",
-            height: "40px",
-            width: "min(90vw, 400px)",
-            boxSizing: "border-box",
-            margin: "auto",
-            padding: "0px 10px",
-          }}
-        >
-          <SearchRounded style={{ paddingRight: "10px" }} />
-          <InputBase
-            placeholder="Search organisations"
-            autoFocus
-            value={searchString}
-            onChange={({ target }) => {
-              let text = target.value;
-              text = text.trimStart();
+        <Typography variant="h4" align="left">
+          {show.name}
+        </Typography>
 
-              setSearchString(text);
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Fab
+            size="medium"
+            variant="extended"
+            sx={{
+              height: "48px",
+              width: "48px",
+              transition: "all 200ms ease-in-out",
+              "&:hover": { width: "140px" },
+              "&:hover .fab-text": { opacity: "1 !important" },
+              flexWrap: "nowrap",
+              overflow: "hidden",
+              justifyContent: "flex-start",
             }}
-          />
-        </Paper>
+          >
+            <AddRounded
+              style={{ transform: "translateX(calc(0.5em - 15px))" }}
+            />
+            <Typography
+              className="fab-text"
+              style={{
+                whiteSpace: "nowrap",
+                opacity: 0,
+                transition: "all 200ms ease-in-out",
+              }}
+            >
+              NEW TEAM
+            </Typography>
+          </Fab>
+        </div>
 
         <TableContainer
           component={Paper}
@@ -92,15 +92,15 @@ const Home = () => {
               <TableRow>
                 <TableCell width={"20px"}></TableCell>
                 <TableCell>Name</TableCell>
+                <TableCell>Description</TableCell>
                 <TableCell align="center">Members</TableCell>
-                <TableCell align="center">Teams</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {show &&
-                show.map((row) => (
+                show.teams.map((team) => (
                   <TableRow
-                    key={row.name}
+                    key={team.name}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                       cursor: "pointer",
@@ -108,7 +108,7 @@ const Home = () => {
                       "&:hover": { backgroundColor: "rgb(240,240,240)" },
                     }}
                     onClick={() => {
-                      navigate("/org/" + row.id);
+                      navigate("/team/" + team.id);
                     }}
                   >
                     <TableCell
@@ -118,7 +118,7 @@ const Home = () => {
                         paddingBottom: "10px",
                       }}
                     >
-                      <Avatar>{row.name[0]}</Avatar>
+                      <Avatar>{team.name[0]}</Avatar>
                     </TableCell>
                     <TableCell
                       component="th"
@@ -127,13 +127,22 @@ const Home = () => {
                         paddingLeft: "5px",
                       }}
                     >
-                      {row.name}
+                      {team.name}
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      style={
+                        {
+                          // textOverflow: "ellipsis",
+                          // whiteSpace: "nowrap",
+                          // overfow: "hidden",
+                        }
+                      }
+                    >
+                      {team.description}
                     </TableCell>
                     <TableCell align="center">
-                      {row.teams ? getMembers(row.teams) : 1}
-                    </TableCell>
-                    <TableCell align="center">
-                      {row.teams ? row.teams.length : 0}
+                      {team.members ? team.members.length : 1}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -141,8 +150,13 @@ const Home = () => {
           </Table>
         </TableContainer>
       </div>
+    );
+
+  return (
+    <div>
+      <CircularProgress />
     </div>
   );
 };
 
-export default Home;
+export default Organisation;

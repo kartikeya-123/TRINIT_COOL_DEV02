@@ -125,7 +125,20 @@ exports.getAllOrganisations = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    organisations: organisations,
+    organisations,
+  });
+});
+
+exports.getOrganisation = catchAsync(async (req, res, next) => {
+  const organisation = await Organisation.findById(req.params.id).populate({
+    path: "teams",
+    model: "Team",
+    select: "name members description",
+  });
+
+  res.status(200).json({
+    status: "success",
+    organisation,
   });
 });
 
