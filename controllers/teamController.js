@@ -125,7 +125,20 @@ exports.getAllOrganisations = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    organisations: organisations,
+    organisations,
+  });
+});
+
+exports.getOrganisation = catchAsync(async (req, res, next) => {
+  const organisation = await Organisation.findById(req.params.id).populate({
+    path: "teams",
+    model: "Team",
+    select: "name members description",
+  });
+
+  res.status(200).json({
+    status: "success",
+    organisation,
   });
 });
 
@@ -138,22 +151,22 @@ exports.getTeam = catchAsync(async (req, res, next) => {
       //Not a member of team
       const resolvedBugs = await Bug.find({ team: teamId, status: "resolved" });
       const userBugs = await Bug.find({ created: { created_by: req.user.id } });
-      res.status(200).json({
-        team,
-        resolvedBugs,
-        userBugs,
-      });
-    } else {
-      // Member of a team
-      const bugs = await Bug.find({ team: teamId });
-      const resolvedBugs = await Bug.find({ team: teamId, status: "resolved" });
-      const userBugs = await Bug.find({ created: { created_by: req.user.id } });
+
+      const bugs = [resolvedBugs, userBugs];
 
       res.status(200).json({
         team,
         bugs,
-        resolvedBugs,
-        userBugs,
+      });
+    } else {
+      // Member of a team
+      const bugs = await Bug.find({ team: teamId });
+      //   const resolvedBugs = await Bug.find({ team: teamId, status: "resolved" });
+      //   const userBugs = await Bug.find({ created: { created_by: req.user.id } });
+
+      res.status(200).json({
+        team,
+        bugs,
       });
     }
   }
