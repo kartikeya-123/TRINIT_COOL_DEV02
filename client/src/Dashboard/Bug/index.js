@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Avatar, CircularProgress, Paper, Typography } from "@mui/material";
+import {
+  Avatar,
+  Chip,
+  CircularProgress,
+  Divider,
+  Paper,
+  Typography,
+} from "@mui/material";
 
 const month = [
   "Jan",
@@ -42,25 +49,62 @@ const Bug = ({ user }) => {
   if (bug)
     return (
       <div>
-        <div>
+        <div style={{ textAlign: "left" }}>
           <Typography variant="h4" align="left">
             {bug.name}
           </Typography>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <Avatar
-              src={bug.created.created_by.image}
-              style={{ width: "30px", height: "30px", marginRight: "10px" }}
+            <Chip
+              label={bug.status}
+              color={
+                bug.status === "raised"
+                  ? "primary"
+                  : bug.status === "assigned"
+                  ? "warning"
+                  : "success"
+              }
+              size="small"
             />
-            <Typography
-              align="left"
-              style={{ color: "grey", fontSize: "14px" }}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                padding: "5px 10px",
+              }}
             >
-              {bug.created.created_by.name} raised this bug on
-              {" " + displayDate(bug.created.created_at)}
-            </Typography>
+              <Typography
+                align="left"
+                style={{ color: "grey", fontSize: "14px" }}
+              >
+                {bug.created.created_by.name} raised this bug on
+                {" " + displayDate(bug.created.created_at)}
+              </Typography>
+            </div>
           </div>
-          <Paper style={{ textAlign: "left", padding: "20px" }}>
-            {bug.description}
+          <Paper style={{ textAlign: "left", margin: "20px 0px" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                padding: "5px 10px",
+                backgroundColor: "rgb(250,250,250)",
+              }}
+            >
+              <Avatar
+                src={bug.created.created_by.image}
+                style={{ width: "30px", height: "30px", marginRight: "10px" }}
+              />
+              <Typography
+                align="left"
+                style={{ color: "grey", fontSize: "14px" }}
+              >
+                {bug.created.created_by.name} described this bug as
+              </Typography>
+            </div>
+            <Divider />
+            <div style={{ padding: "10px", paddingLeft: "20px" }}>
+              {bug.description}
+            </div>
           </Paper>
         </div>
       </div>
