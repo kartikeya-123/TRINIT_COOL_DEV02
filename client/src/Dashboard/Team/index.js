@@ -22,7 +22,7 @@ import AddRounded from "@mui/icons-material/AddRounded";
 import BugModal from "./../Modal/BugModal";
 import MemberModal from "./../Modal/AddMember";
 
-const Team = () => {
+const Team = ({ user }) => {
   const navigate = useNavigate();
 
   const [bugs, setBugs] = useState(null);
@@ -181,36 +181,38 @@ const Team = () => {
             NEW BUG
           </Typography>
         </Fab>
-        <Fab
-          size="medium"
-          variant="extended"
-          sx={{
-            height: "48px",
-            width: "48px",
-            transition: "all 200ms ease-in-out",
-            "&:hover": { width: "160px" },
-            "&:hover .fab-text": { opacity: "1 !important" },
-            flexWrap: "nowrap",
-            overflow: "hidden",
-            justifyContent: "flex-start",
-          }}
-          onClick={showMemberModal}
-          color="primary"
-        >
-          <PersonAddAltRounded
-            style={{ transform: "translateX(calc(0.5em - 15px))" }}
-          />
-          <Typography
-            className="fab-text"
-            style={{
-              whiteSpace: "nowrap",
-              opacity: 0,
+        {team && user.id === team.creator ? (
+          <Fab
+            size="medium"
+            variant="extended"
+            sx={{
+              height: "48px",
+              width: "48px",
               transition: "all 200ms ease-in-out",
+              "&:hover": { width: "160px" },
+              "&:hover .fab-text": { opacity: "1 !important" },
+              flexWrap: "nowrap",
+              overflow: "hidden",
+              justifyContent: "flex-start",
             }}
+            onClick={showMemberModal}
+            color="primary"
           >
-            Add Member
-          </Typography>
-        </Fab>
+            <PersonAddAltRounded
+              style={{ transform: "translateX(calc(0.5em - 15px))" }}
+            />
+            <Typography
+              className="fab-text"
+              style={{
+                whiteSpace: "nowrap",
+                opacity: 0,
+                transition: "all 200ms ease-in-out",
+              }}
+            >
+              Add Member
+            </Typography>
+          </Fab>
+        ) : null}
       </div>
       <Paper
         style={{
@@ -262,9 +264,7 @@ const Team = () => {
                   <TableCell align="center" width={"10%"}>
                     Status
                   </TableCell>
-                  <TableCell align="center" width={"20%"}>
-                    Assigned To
-                  </TableCell>
+
                   <TableCell align="center" width={"10%"}>
                     Priority
                   </TableCell>
@@ -313,9 +313,7 @@ const Team = () => {
                           ""
                         )}
                       </TableCell>
-                      <TableCell align="center">
-                        {row.assigned ? row.assigned.assigned_to : ""}
-                      </TableCell>
+
                       <TableCell align="center">
                         {row.priority ? (
                           <Chip label={row.priority} color="success" />
