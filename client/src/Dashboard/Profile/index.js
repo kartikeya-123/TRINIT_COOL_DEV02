@@ -155,7 +155,7 @@ const ProfileStats = ({ orgs, ...props }) => {
           </Fab>
         </div>
         <Grid container spacing={2} alignItems="stretch">
-          {organisations &&
+          {organisations !== null ?
             organisations.map((org, index) => {
               const ind = Math.floor(Math.random() * 100) % colors.length;
               console.log(ind);
@@ -211,7 +211,15 @@ const ProfileStats = ({ orgs, ...props }) => {
                   </Card>
                 </Grid>
               );
-            })}
+            }) : <p style={{
+              display: 'flex',
+              justifyContent: "center",
+              marginLeft: "16px",
+              color:"#757575"
+              // width: "100%"
+            }}>
+              You are not part of any organization
+            </p>}
         </Grid>
         {/* {props.teams.map((team) => {
         return <div className='teamCard'>
