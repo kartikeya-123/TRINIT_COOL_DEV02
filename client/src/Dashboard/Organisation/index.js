@@ -14,6 +14,7 @@ import {
   Paper,
   Fab,
   InputBase,
+  Button,
 } from "@mui/material";
 import { SearchRounded, AddRounded } from "@mui/icons-material";
 
@@ -206,6 +207,7 @@ const Organisation = ({ user }) => {
             }}
           />
         </Paper>
+
         <div
           style={{
             margin: "50px auto",
