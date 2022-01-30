@@ -206,77 +206,93 @@ const Organisation = ({ user }) => {
             }}
           />
         </Paper>
-
-        <TableContainer
-          component={Paper}
+        <div
           style={{
             margin: "50px auto",
-            width: "min(90vw,600px)",
-            borderRadius: "20px",
+            display: "flex",
+            justifyContent: "center",
           }}
         >
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell width={"20px"}></TableCell>
-                <TableCell>Team</TableCell>
-                <TableCell>Description</TableCell>
-                <TableCell align="center">Members</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {show &&
-                show.map((team) => (
-                  <TableRow
-                    key={team.name}
-                    sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
-                      cursor: "pointer",
-                      transition: "all 150ms ease-in-out",
-                      "&:hover": { backgroundColor: "rgb(240,240,240)" },
-                    }}
-                    onClick={() => {
-                      navigate("/team/" + team.id);
-                    }}
-                  >
-                    <TableCell
-                      style={{
-                        paddingRight: "5px",
-                        paddingTop: "10px",
-                        paddingBottom: "10px",
-                      }}
-                    >
-                      <Avatar>{team.name[0]}</Avatar>
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      style={{
-                        paddingLeft: "5px",
-                      }}
-                    >
-                      {showName(team.name)}
-                    </TableCell>
-                    <TableCell
-                      align="left"
-                      style={
-                        {
-                          // textOverflow: "ellipsis",
-                          // whiteSpace: "nowrap",
-                          // overfow: "hidden",
-                        }
-                      }
-                    >
-                      {team.description}
-                    </TableCell>
-                    <TableCell align="center">
-                      {team.members ? team.members.length : 1}
-                    </TableCell>
+          {show && show.length > 0 ? (
+            <TableContainer
+              component={Paper}
+              style={{
+                width: "min(90vw,600px)",
+                borderRadius: "20px",
+              }}
+            >
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell width={"20px"}></TableCell>
+                    <TableCell>Team</TableCell>
+                    <TableCell>Description</TableCell>
+                    <TableCell align="center">Members</TableCell>
                   </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {show &&
+                    show.map((team) => (
+                      <TableRow
+                        key={team.name}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                          cursor: "pointer",
+                          transition: "all 150ms ease-in-out",
+                          "&:hover": { backgroundColor: "rgb(240,240,240)" },
+                        }}
+                        onClick={() => {
+                          navigate("/team/" + team.id);
+                        }}
+                      >
+                        <TableCell
+                          style={{
+                            paddingRight: "5px",
+                            paddingTop: "10px",
+                            paddingBottom: "10px",
+                          }}
+                        >
+                          <Avatar>{team.name[0]}</Avatar>
+                        </TableCell>
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          style={{
+                            paddingLeft: "5px",
+                          }}
+                        >
+                          {showName(team.name)}
+                        </TableCell>
+                        <TableCell
+                          align="left"
+                          style={
+                            {
+                              // textOverflow: "ellipsis",
+                              // whiteSpace: "nowrap",
+                              // overfow: "hidden",
+                            }
+                          }
+                        >
+                          {team.description}
+                        </TableCell>
+                        <TableCell align="center">
+                          {team.members ? team.members.length : 1}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : show ? (
+            <div>
+              <Typography variant="h6">🤷‍♂️ Nothing here ...</Typography>
+            </div>
+          ) : (
+            <div>
+              <CircularProgress />
+            </div>
+          )}
+        </div>
       </div>
     );
 

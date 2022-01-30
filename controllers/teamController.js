@@ -175,7 +175,7 @@ exports.getTeam = catchAsync(async (req, res, next) => {
           created: { created_by: req.user.id },
         });
 
-        const bugs = [resolvedBugs, userBugs];
+        const bugs = [...resolvedBugs, ...userBugs];
 
         res.status(200).json({
           team,
