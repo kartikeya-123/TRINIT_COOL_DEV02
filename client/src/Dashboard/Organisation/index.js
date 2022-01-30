@@ -15,16 +15,17 @@ import {
   Fab,
 } from "@mui/material";
 import AddRounded from "@mui/icons-material/AddRounded";
+import TeamModal from "./../Modal/TeamModal.js";
 
 const Organisation = () => {
   const navigate = useNavigate();
 
   const [org, setOrg] = useState(null);
   const [show, setShow] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (org) {
-      console.log(org);
       setShow(org);
     }
   }, [org]);
@@ -41,9 +42,35 @@ const Organisation = () => {
       });
   }, []);
 
+  const showTeamModal = () => {
+    setShowModal(true);
+  };
+
+  const close = () => {
+    setShowModal(false);
+  };
+
+  const addTeam = (data) => {
+    const id = window.location.pathname.split("/")[2];
+    axios
+      .post(`/api/v1/team/create/` + id, data)
+      .then((res) => {
+        console.log(res.data);
+        const newteam = res.data.team;
+        const old = { ...org };
+        old.teams.push(newteam);
+        setOrg(old);
+        close();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   if (show)
     return (
       <div>
+        <TeamModal show={showModal} close={close} add={addTeam} />
         <Typography variant="h4" align="left">
           {show.name}
         </Typography>
@@ -62,6 +89,7 @@ const Organisation = () => {
               overflow: "hidden",
               justifyContent: "flex-start",
             }}
+            onClick={showTeamModal}
           >
             <AddRounded
               style={{ transform: "translateX(calc(0.5em - 15px))" }}

@@ -16,7 +16,7 @@ exports.createTeam = catchAsync(async (req, res, next) => {
       name: req.body.name,
       description: req.body.description,
       creator: userId,
-      organisation: req.body.organisation,
+      organisation: req.params.orgId,
       roles: req.body.roles,
       members: [
         {
@@ -36,7 +36,7 @@ exports.createTeam = catchAsync(async (req, res, next) => {
       $push: { teams: tData },
     });
 
-    await Organisation.findByIdAndUpdate(req.body.organisation, {
+    await Organisation.findByIdAndUpdate(req.params.orgId, {
       $push: { teams: newTeam.id },
     });
     res.status(200).json({
