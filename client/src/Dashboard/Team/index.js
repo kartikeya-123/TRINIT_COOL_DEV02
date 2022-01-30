@@ -15,6 +15,7 @@ import {
   TableHead,
   Fab,
   Typography,
+  Chip,
 } from "@mui/material";
 import { SearchRounded } from "@mui/icons-material";
 import AddRounded from "@mui/icons-material/AddRounded";
@@ -208,7 +209,7 @@ const Team = () => {
               <TableHead>
                 <TableRow>
                   <TableCell width={"15px"}></TableCell>
-                  <TableCell width={"30%"}>Name</TableCell>
+                  <TableCell width={"30%"}>Bug</TableCell>
                   <TableCell width={"30%"}>Description</TableCell>
                   <TableCell align="center" width={"10%"}>
                     Status
@@ -258,13 +259,21 @@ const Team = () => {
                         {row.description ? row.description : ""}
                       </TableCell>
                       <TableCell align="center">
-                        {row.status ? row.status : ""}
+                        {row.status ? (
+                          <Chip label={row.status} color="primary" />
+                        ) : (
+                          ""
+                        )}
                       </TableCell>
                       <TableCell align="center">
                         {row.assigned ? row.assigned.assigned_to : ""}
                       </TableCell>
                       <TableCell align="center">
-                        {row.priority ? row.priority : ""}
+                        {row.priority ? (
+                          <Chip label={row.priority} color="success" />
+                        ) : (
+                          ""
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}

@@ -41,3 +41,16 @@ exports.getBug = catchAsync(async (req, res, next) => {
 
   res.status(200).json({ status: "success", bug });
 });
+
+exports.assignBug = catchAsync(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+  const bug = await Bug.findByIdAndUpdate(req.params.bugId, {
+    assigned: { assigned_to: user.id },
+    priority: req.body.priority,
+    status: "assigned",
+  });
+  res.status(200).json({
+    status: "successs",
+    bug,
+  });
+});
