@@ -11,7 +11,7 @@ const setProps = (props) => {
       children: [
         { path: "/", element: <Navigate to="/home" replace /> },
         { path: "/home", element: <Home {...props} /> },
-        { path: "/team", element: <Team {...props} /> },
+        { path: "/team/:id", element: <Team {...props} /> },
         { path: "/profile", element: <Profile {...props} /> },
         { path: "/modal", element: <Modal /> },
         { path: "*", element: <Navigate to="/home" replace /> },

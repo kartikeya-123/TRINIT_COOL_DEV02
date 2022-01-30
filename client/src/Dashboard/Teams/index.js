@@ -17,24 +17,32 @@ const Team = () => {
     console.log(window.location.pathname.split('/')[2])
 
     const [team, setTeam] = useState(null);
+    const [searchString, setSearchString] = useState("");
 
     useEffect(() => {
-        // axios
-        //     .get("api/v1/organisation/all", {
-        //         withCredentials: true,
-        //     })
-        //     .then((res) => {
-        //         setOrg(res.data.organisations);
-        //     })
-        //     .catch((err) => {
-        //         console.log(err);
-        //     });
+        let id = window.location.pathname.split('/')[2]
+        axios
+            .get("api/v1/team/"+id, {
+                withCredentials: true,
+            })
+            .then((res) => {
+                setTeam(res.data.organisations);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }, []);
 
+    useEffect(() => {
+      console.log(team);
+    }, [team]);
+    
 
     return (
         <div>
-            Team
+            <div>
+                Team Name
+            </div>
         </div>
     )
 }
