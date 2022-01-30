@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.use(authController.verifyJwtToken, authController.loggedInUser);
 
-router.post("/create", teamController.createTeam);
+router.post("/create/:orgId", teamController.createTeam);
 router.post("/add-members", teamController.addMembersToTeam);
 router.get("/:teamId", teamController.getTeam);
 

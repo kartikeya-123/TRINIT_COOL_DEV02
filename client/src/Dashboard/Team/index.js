@@ -17,6 +17,8 @@ import {
 } from "@mui/material";
 import { SearchRounded } from "@mui/icons-material";
 import AddRounded from "@mui/icons-material/AddRounded";
+import BugModal from "./../Modal/BugModal";
+
 
 const Team = () => {
   const navigate = useNavigate();
@@ -24,6 +26,7 @@ const Team = () => {
   const [bugs, setBugs] = useState(null);
   const [team, setTeam] = useState(null);
   const [show, setShow] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const [searchString, setSearchString] = useState("");
 
   useEffect(() => {
@@ -52,8 +55,37 @@ const Team = () => {
     }
   }, [bugs]);
 
+  const showBugModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false)
+  }
+
+  const addBug = (bugName, bugDescription) => {
+    const data = {
+      name: bugName,
+      description: bugDescription,
+      team: team.id
+    };
+    axios
+      .post("/api/v1/bug/team/"+team.id, data)
+      .then((res) => {
+        console.log(res.data)
+        let oldBugs = [...bugs];
+        oldBugs.push(res.data.bug);
+        setBugs(oldBugs);
+        closeModal();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
   return (
     <div>
+      <BugModal show={showModal} close={closeModal} add={addBug} />
       <div className="teamName">
         <h2>{team !== null ? team.name : ""}</h2>
       </div>
@@ -81,6 +113,7 @@ const Team = () => {
             overflow: "hidden",
             justifyContent: "flex-start",
           }}
+          onClick={showBugModal}
         >
           <AddRounded style={{ transform: "translateX(calc(0.5em - 15px))" }} />
           <Typography
@@ -133,7 +166,7 @@ const Team = () => {
             <TableRow>
               <TableCell width={"15px"}></TableCell>
               <TableCell width={"30%"}>Name</TableCell>
-              <TableCell width={"30%"} align="center">
+              <TableCell width={"30%"} >
                 Description
               </TableCell>
               <TableCell align="center" width={"10%"}>
@@ -180,7 +213,7 @@ const Team = () => {
                   >
                     {row.name}
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell>
                     {row.description ? row.description : ""}
                   </TableCell>
                   <TableCell align="center">
