@@ -3,8 +3,8 @@ import { useRoutes } from "react-router-dom";
 import setProps from "../routes";
 import NavBar from "./NavBar";
 
-const DashboardLayout = ({ user }) => {
-  const routing = useRoutes(setProps({ user }));
+const DashboardLayout = ({ user, assigned, resolved }) => {
+  const routing = useRoutes(setProps({ user, assigned, resolved }));
 
   return (
     <div>

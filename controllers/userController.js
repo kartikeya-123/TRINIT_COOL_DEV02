@@ -11,7 +11,7 @@ exports.aboutMe = catchAsync(async (req, res, next) => {
   if (!req.user) {
     return next(new AppError("This user is not present", 401));
   }
-  const user = await User.findById(req.user.id).populate({
+  let user = await User.findById(req.user.id).populate({
     path: "organisations",
     model: "Organisation",
   });
@@ -19,11 +19,12 @@ exports.aboutMe = catchAsync(async (req, res, next) => {
   const assigned = await Bug.find({ assigned: { assigned_by: req.user.id } });
   const resolved = await Bug.find({ resolved: { resolved_by: req.user.id } });
 
+  user.assigned = assigned.length;
+  user.resolved = resolved.length;
+
   res.status(200).json({
     status: "suceess",
     user: user,
-    assigned: assigned.length,
-    resolved: resolved.length,
   });
 });
 

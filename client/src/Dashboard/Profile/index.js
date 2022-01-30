@@ -7,7 +7,7 @@ import Modal from "./../Modal/Modal";
 import { AddRounded } from "@mui/icons-material";
 import colors from "./../assets/colors.js";
 
-const Profile = ({ user }) => {
+const Profile = ({ user, assigned, resolved }) => {
   return (
     <div className="body">
       <Grid container spacing={4}>
@@ -15,7 +15,11 @@ const Profile = ({ user }) => {
           <ProfileDetails user={user} />
         </Grid>
         <Grid item xs={8}>
-          <ProfileStats orgs={user.organisations} />
+          <ProfileStats
+            orgs={user.organisations}
+            assigned={assigned}
+            resolved={resolved}
+          />
         </Grid>
       </Grid>
     </div>
@@ -77,7 +81,7 @@ function stringAvatar(name) {
   };
 }
 
-const ProfileStats = ({ orgs, ...props }) => {
+const ProfileStats = ({ orgs, assigned, resolved, ...props }) => {
   const [organisations, setOrganisations] = useState(orgs);
   const [show, setShow] = useState(false);
 
@@ -128,13 +132,18 @@ const ProfileStats = ({ orgs, ...props }) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: "12px" 
+            marginBottom: "12px",
           }}
         >
-          <div className="heading" style={{
-            margin:0,
-            padding:0
-          }}>My Organizations</div>
+          <div
+            className="heading"
+            style={{
+              margin: 0,
+              padding: 0,
+            }}
+          >
+            My Organizations
+          </div>
           <Fab
             onClick={showOrgModal}
             size="small"
@@ -209,13 +218,13 @@ const ProfileStats = ({ orgs, ...props }) => {
         <div className="stat" style={{ border: "1px solid #ff7043" }}>
           <BugReportIcon style={{ paddingRight: "6px", color: "#ff7043" }} />
           <div className="heading">
-            <p style={{ marginBottom: 0, color: "#ff7043" }}>Pending Bugs: 4</p>
+            <p style={{ marginBottom: 0, color: "#ff7043" }}>Pending Bugs: 1</p>
           </div>
         </div>
         <div className="stat" style={{ border: "1px solid green" }}>
           <BugReportIcon style={{ paddingRight: "6px", color: "green" }} />
           <div className="heading">
-            <p style={{ marginBottom: 0, color: "green" }}>Bugs Resolved: 16</p>
+            <p style={{ marginBottom: 0, color: "green" }}>Bugs Resolved: 1</p>
           </div>
         </div>
       </div>

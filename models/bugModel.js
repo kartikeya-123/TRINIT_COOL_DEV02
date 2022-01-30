@@ -40,7 +40,6 @@ const bugSchema = new mongoose.Schema(
       },
       assigned_at: {
         type: Date,
-        default: Date.now(),
       },
     },
     resolved: {
@@ -50,7 +49,6 @@ const bugSchema = new mongoose.Schema(
       },
       resolved_at: {
         type: Date,
-        default: Date.now(),
       },
     },
     tags: {
