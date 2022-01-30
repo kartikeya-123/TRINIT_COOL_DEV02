@@ -6,6 +6,8 @@ import axios from "axios";
 import Modal from "./../Modal/Modal";
 import { AddRounded } from "@mui/icons-material";
 import colors from "./../assets/colors.js";
+import { useNavigate } from "react-router-dom";
+
 
 const Profile = ({ user }) => {
   return (
@@ -78,6 +80,8 @@ function stringAvatar(name) {
 }
 
 const ProfileStats = ({ orgs, ...props }) => {
+  const navigate = useNavigate();
+
   const [organisations, setOrganisations] = useState(orgs);
   const [show, setShow] = useState(false);
 
@@ -169,6 +173,10 @@ const ProfileStats = ({ orgs, ...props }) => {
                       flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
+                    }}
+
+                    onClick={() => {
+                      navigate("/org/" + org.id);
                     }}
                   >
                     <Avatar
