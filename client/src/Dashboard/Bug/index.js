@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import './Bug.css';
 import {
   Avatar,
   Chip,
@@ -7,7 +8,10 @@ import {
   Divider,
   Paper,
   Typography,
+  Fab
 } from "@mui/material";
+import ModeEditRoundedIcon from '@mui/icons-material/ModeEditRounded';
+import AssignModal from "../Modal/AssignModal";
 
 const month = [
   "Jan",
@@ -25,6 +29,11 @@ const month = [
 
 const Bug = ({ user }) => {
   const [bug, setBug] = useState(null);
+  const [team, setTeam] = useState(null);
+  const [assignedTo, setAssignedTo] = useState(null);
+  const [priority, setPriority] = useState('');
+  const [showModal, setShowModal] = useState(false);
+
 
   const displayDate = (date) => {
     const d = new Date(date);
@@ -46,39 +55,140 @@ const Bug = ({ user }) => {
       });
   }, []);
 
+  useEffect(() => {
+    if (bug !== null) {
+      setAssignedTo(bug.assigned ? bug.assigned.assigned_to : "")
+      setPriority(bug.priority ? bug.priority : "")
+      const id = bug.team
+      axios
+        .get("/api/v1/team/" + id, {
+          withCredentials: true
+        })
+        .then((res) => {
+          setTeam(res.data.team);
+          console.log(res.data.team);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [bug]);
+
+  const showBugModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false)
+  }
+
+  const addBug = (assignedToEmail, priorityBug) => {
+    const data = {
+      email: assignedToEmail,
+      priority: priorityBug
+      // team: team.id 
+    };
+    console.log(data)
+    axios
+        .post("/api/v1/bug/patch", data)
+        .then((res) => {
+            // let oldBugs = [...bugs];
+            // oldBugs.push(res.data.bugs);
+            setBug(res.data.bug);
+            closeModal();
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+  }
+
   if (bug)
     return (
       <div>
+        <AssignModal show={showModal} close={closeModal} add={addBug} />
         <div style={{ textAlign: "left" }}>
-          <Typography variant="h4" align="left">
-            {bug.name}
-          </Typography>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <Chip
-              label={bug.status}
-              color={
-                bug.status === "raised"
-                  ? "primary"
-                  : bug.status === "assigned"
-                  ? "warning"
-                  : "success"
-              }
-              size="small"
-            />
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "5px 10px",
-              }}
-            >
-              <Typography
-                align="left"
-                style={{ color: "grey", fontSize: "14px" }}
-              >
-                {bug.created.created_by.name} raised this bug on
-                {" " + displayDate(bug.created.created_at)}
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}>
+            <div>
+              <Typography variant="h4" align="left">
+                {bug.name}
               </Typography>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <Chip
+                  label={bug.status}
+                  color={
+                    bug.status === "raised"
+                      ? "primary"
+                      : bug.status === "assigned"
+                        ? "warning"
+                        : "success"
+                  }
+                  size="small"
+                />
+                {!bug.priority ?
+                  <Chip
+                    label={bug.priority + " Priority"}
+                    size="small"
+                    style={{
+                      marginLeft: '6px',
+                      backgroundColor: bug.priority === "high"
+                        ? "red"
+                        : bug.status === "medium"
+                          ? "orange"
+                          : "green"
+                    }}
+                  />
+                  : null}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "5px 10px",
+                  }}
+                >
+                  <Typography
+                    align="left"
+                    style={{ color: "grey", fontSize: "14px" }}
+                  >
+                    {bug.created.created_by.name} raised this bug on
+                    {" " + displayDate(bug.created.created_at)}
+                  </Typography>
+                </div>
+              </div>
+            </div>
+            <div>
+              <Fab
+                size="medium"
+                variant="extended"
+                sx={{
+                  height: "48px",
+                  width: "48px",
+                  transition: "all 200ms ease-in-out",
+                  "&:hover": { width: "140px" },
+                  "&:hover .fab-text": { opacity: "1 !important" },
+                  flexWrap: "nowrap",
+                  overflow: "hidden",
+                  justifyContent: "flex-start",
+                }}
+                onClick={showBugModal}
+              >
+                <ModeEditRoundedIcon
+                  style={{ transform: "translateX(calc(0.5em - 15px))" }}
+                />
+                <Typography
+                  className="fab-text"
+                  style={{
+                    whiteSpace: "nowrap",
+                    opacity: 0,
+                    transition: "all 200ms ease-in-out",
+                  }}
+                >
+                  EDIT BUG
+                </Typography>
+              </Fab>
             </div>
           </div>
           <Paper style={{ textAlign: "left", margin: "20px 0px" }}>
