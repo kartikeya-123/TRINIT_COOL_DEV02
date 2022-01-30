@@ -11,4 +11,6 @@ router.use(authController.verifyJwtToken, authController.loggedInUser);
 router.get("/:bugId", bugController.getBug);
 router.post("/team/:teamId", bugController.createBug);
 router.patch("/assign/:bugId", bugController.assignBug);
+router.patch("/resolve/:bugId", bugController.resolveBug);
+
 module.exports = router;

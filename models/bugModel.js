@@ -54,6 +54,10 @@ const bugSchema = new mongoose.Schema(
     tags: {
       type: String,
     },
+    request: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+    },
     //    comments : [
     //        {
     //            type : String,
