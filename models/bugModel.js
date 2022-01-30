@@ -11,7 +11,7 @@ const bugSchema = new mongoose.Schema(
     },
     priority: {
       type: String,
-      enum: ["low", "medium", "high"],
+      enum: ["low", "high"],
     },
     status: {
       type: String,
@@ -34,7 +34,7 @@ const bugSchema = new mongoose.Schema(
       },
     },
     assigned: {
-      assigned_by: {
+      assigned_To: {
         type: mongoose.Schema.ObjectId,
         ref: "User",
       },
