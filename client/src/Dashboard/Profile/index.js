@@ -8,9 +8,7 @@ import { AddRounded } from "@mui/icons-material";
 import colors from "./../assets/colors.js";
 import { useNavigate } from "react-router-dom";
 
-
 const Profile = ({ user }) => {
-  console.log(user);
   return (
     <div className="body">
       <Grid container spacing={4}>
@@ -181,7 +179,6 @@ const ProfileStats = ({ orgs, ...props }) => {
                       justifyContent: "center",
                       cursor: "pointer"
                     }}
-
                     onClick={() => {
                       navigate("/org/" + org.id);
                     }}

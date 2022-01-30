@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const Dashboard = () => {
+const Dashboard = ({ user }) => {
   return <div>DASHBOARD</div>;
 };
 

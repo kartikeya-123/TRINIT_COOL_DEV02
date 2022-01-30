@@ -10,7 +10,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 export default function BugModal({ show, close, add }) {
 
     const [name, setName] = useState("");
-    const [description, setDescription] = useState("Desc");
+    const [description, setDescription] = useState("");
 
     const handleSubmit = () => {
         add(name, description);
@@ -47,7 +47,7 @@ export default function BugModal({ show, close, add }) {
                         onChange={handleTextChange}
                     />
                     <TextField
-                        autoFocus
+                        // autoFocus
                         margin="dense"
                         id="description"
                         label="Bug Description"

@@ -23,15 +23,21 @@ exports.createBug = catchAsync(async (req, res, next) => {
   });
 });
 
-const resolveBug = catchAsync(async (req, res, next) => {
+exports.resolveBug = catchAsync(async (req, res, next) => {
   const bugId = req.body.bugId;
   const resolvedBy = req.body.resolvedBy;
   const bug = await Bug.findByIdAndUpdate(bugId, {
     status: "resolved",
     resolved: { resolved_by: resolvedBy },
   });
-  res.status(200).json({
-    status: "success",
-    bug: bug,
+  res.status(200).json({ status: "success", bug });
+});
+
+exports.getBug = catchAsync(async (req, res, next) => {
+  const bug = await Bug.findById(req.params.bugId).populate({
+    path: "created.created_by",
+    ref: "User",
   });
+
+  res.status(200).json({ status: "success", bug });
 });
