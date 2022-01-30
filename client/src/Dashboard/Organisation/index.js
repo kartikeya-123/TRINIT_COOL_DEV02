@@ -76,7 +76,9 @@ const Organisation = ({ user }) => {
         </Typography>
 
         {user.id === org.creator ? (
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <div
+            style={{ display: "flex", justifyContent: "flex-end", gap: "30px" }}
+          >
             <Fab
               size="medium"
               variant="extended"
@@ -104,6 +106,36 @@ const Organisation = ({ user }) => {
                 }}
               >
                 NEW TEAM
+              </Typography>
+            </Fab>
+            <Fab
+              size="medium"
+              variant="extended"
+              sx={{
+                height: "48px",
+                width: "48px",
+                transition: "all 200ms ease-in-out",
+                "&:hover": { width: "140px" },
+                "&:hover .fab-text": { opacity: "1 !important" },
+                flexWrap: "nowrap",
+                overflow: "hidden",
+                justifyContent: "flex-start",
+              }}
+              onClick={showTeamModal}
+              color="primary"
+            >
+              <AddRounded
+                style={{ transform: "translateX(calc(0.5em - 15px))" }}
+              />
+              <Typography
+                className="fab-text"
+                style={{
+                  whiteSpace: "nowrap",
+                  opacity: 0,
+                  transition: "all 200ms ease-in-out",
+                }}
+              >
+                NEW MEMBER
               </Typography>
             </Fab>
           </div>
