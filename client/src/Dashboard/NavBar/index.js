@@ -12,7 +12,8 @@ import {
 
 import {
   HomeRounded,
-  GroupsRounded,
+  // GroupsRounded,
+  ListAltRounded,
   LogoutRounded,
   PersonRounded,
 } from "@mui/icons-material";
@@ -87,18 +88,18 @@ const NavBar = ({ user }) => {
               <ListItemIcon>
                 <PersonRounded />
               </ListItemIcon>
-              <ListItemText>Your Profile</ListItemText>
+              <ListItemText>Profile</ListItemText>
             </MenuItem>
             <MenuItem
               onClick={() => {
-                navigate("/teams");
+                navigate("/dashboard");
                 handleClose();
               }}
             >
               <ListItemIcon>
-                <GroupsRounded />
+                <ListAltRounded />
               </ListItemIcon>
-              <ListItemText>Your Teams</ListItemText>
+              <ListItemText>Dashboard</ListItemText>
             </MenuItem>
             <MenuItem
               onClick={() => {
