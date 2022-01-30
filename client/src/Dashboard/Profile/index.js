@@ -6,9 +6,9 @@ import axios from "axios";
 import Modal from "./../Modal/Modal";
 import { AddRounded } from "@mui/icons-material";
 import colors from "./../assets/colors.js";
+import { useNavigate } from "react-router-dom";
 
 const Profile = ({ user }) => {
-  console.log(user);
   return (
     <div className="body">
       <Grid container spacing={4}>
@@ -79,6 +79,8 @@ function stringAvatar(name) {
 }
 
 const ProfileStats = ({ orgs, ...props }) => {
+  const navigate = useNavigate();
+
   const [organisations, setOrganisations] = useState(orgs);
   const [show, setShow] = useState(false);
 
@@ -151,7 +153,7 @@ const ProfileStats = ({ orgs, ...props }) => {
           </Fab>
         </div>
         <Grid container spacing={2} alignItems="stretch">
-          {organisations &&
+          {organisations !== null ?
             organisations.map((org, index) => {
               const ind = Math.floor(Math.random() * 100) % colors.length;
               console.log(ind);
@@ -175,6 +177,10 @@ const ProfileStats = ({ orgs, ...props }) => {
                       flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
+                      cursor: "pointer"
+                    }}
+                    onClick={() => {
+                      navigate("/org/" + org.id);
                     }}
                   >
                     <Avatar
@@ -203,7 +209,15 @@ const ProfileStats = ({ orgs, ...props }) => {
                   </Card>
                 </Grid>
               );
-            })}
+            }) : <p style={{
+              display: 'flex',
+              justifyContent: "center",
+              marginLeft: "16px",
+              color:"#757575"
+              // width: "100%"
+            }}>
+              You are not part of any organization
+            </p>}
         </Grid>
         {/* {props.teams.map((team) => {
         return <div className='teamCard'>
