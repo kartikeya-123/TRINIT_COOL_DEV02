@@ -12,7 +12,6 @@ const bugSchema = new mongoose.Schema(
     priority: {
       type: String,
       enum: ["low", "medium", "high"],
-      required: [true, "Bug prioriy"],
     },
     status: {
       type: String,
@@ -53,6 +52,9 @@ const bugSchema = new mongoose.Schema(
         type: Date,
         default: Date.now(),
       },
+    },
+    tags: {
+      type: String,
     },
     //    comments : [
     //        {

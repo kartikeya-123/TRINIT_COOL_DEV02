@@ -3,6 +3,7 @@ const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const Team = require("./../models/teamModel");
 const Organisation = require("./../models/organisationModel");
+const Bug = require("../models/bugModel");
 
 exports.createTeam = catchAsync(async (req, res, next) => {
   try {
@@ -139,4 +140,34 @@ exports.getOrganisation = catchAsync(async (req, res, next) => {
     status: "success",
     organisation,
   });
+});
+
+exports.getTeam = catchAsync(async (req, res, next) => {
+  const teamId = req.params.teamId;
+  const team = await Team.findById(teamId);
+  if (team) {
+    const ind = team.members.find((member) => member.userId === req.user.id);
+    if (ind === -1) {
+      //Not a member of team
+      const resolvedBugs = await Bug.find({ team: teamId, status: "resolved" });
+      const userBugs = await Bug.find({ created: { created_by: req.user.id } });
+
+      const bugs = [resolvedBugs, userBugs];
+
+      res.status(200).json({
+        team,
+        bugs,
+      });
+    } else {
+      // Member of a team
+      const bugs = await Bug.find({ team: teamId });
+      //   const resolvedBugs = await Bug.find({ team: teamId, status: "resolved" });
+      //   const userBugs = await Bug.find({ created: { created_by: req.user.id } });
+
+      res.status(200).json({
+        team,
+        bugs,
+      });
+    }
+  }
 });
