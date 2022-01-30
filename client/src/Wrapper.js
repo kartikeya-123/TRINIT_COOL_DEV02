@@ -15,8 +15,6 @@ class Wrapper extends Component {
     user: null,
     isLoading: true,
     loggingOut: false,
-    assigned: 0,
-    resolved: 0,
   };
 
   getUser = (cookies) => {
@@ -25,10 +23,11 @@ class Wrapper extends Component {
         withCredentials: true,
       })
       .then((res) => {
-        console.log(res.data);
-
+        let userData = res.data.user;
+        userData["stats"] = res.data.stats;
+        console.log(userData);
         this.setState({
-          user: res.data.user,
+          user: userData,
           // assigned: res.data.assigned,
           // resolved: res.data.resolved,
           isLoggedIn: cookies ? cookies.isLoggedIn : this.state.isLoggedIn,
@@ -93,11 +92,7 @@ class Wrapper extends Component {
         {!this.state.isLoading && !this.state.loggingOut ? (
           <>
             {this.state.isLoggedIn && this.state.user ? (
-              <DashboardLayout
-                user={this.state.user}
-                assigned={this.state.assigned}
-                resolved={this.state.resolved}
-              />
+              <DashboardLayout user={this.state.user} />
             ) : (
               <div>
                 <Login sucessLogin={this.getLoggedInUser} load={this.load} />

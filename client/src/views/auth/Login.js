@@ -37,7 +37,6 @@ const Login = ({ sucessLogin, load }) => {
   };
 
   const successResponseGoogle = (response) => {
-    console.log(response.tokenId);
     load(true);
     axios
       .post(

@@ -7,7 +7,8 @@ import Modal from "./../Modal/Modal";
 import { AddRounded } from "@mui/icons-material";
 import colors from "./../assets/colors.js";
 
-const Profile = ({ user, assigned, resolved }) => {
+const Profile = ({ user }) => {
+  console.log(user);
   return (
     <div className="body">
       <Grid container spacing={4}>
@@ -15,11 +16,7 @@ const Profile = ({ user, assigned, resolved }) => {
           <ProfileDetails user={user} />
         </Grid>
         <Grid item xs={8}>
-          <ProfileStats
-            orgs={user.organisations}
-            assigned={assigned}
-            resolved={resolved}
-          />
+          <ProfileStats orgs={user.organisations} />
         </Grid>
       </Grid>
     </div>
@@ -81,7 +78,7 @@ function stringAvatar(name) {
   };
 }
 
-const ProfileStats = ({ orgs, assigned, resolved, ...props }) => {
+const ProfileStats = ({ orgs, ...props }) => {
   const [organisations, setOrganisations] = useState(orgs);
   const [show, setShow] = useState(false);
 
@@ -218,13 +215,13 @@ const ProfileStats = ({ orgs, assigned, resolved, ...props }) => {
         <div className="stat" style={{ border: "1px solid #ff7043" }}>
           <BugReportIcon style={{ paddingRight: "6px", color: "#ff7043" }} />
           <div className="heading">
-            <p style={{ marginBottom: 0, color: "#ff7043" }}>Pending Bugs: 1</p>
+            <p style={{ marginBottom: 0, color: "#ff7043" }}>Pending Bugs: 0</p>
           </div>
         </div>
         <div className="stat" style={{ border: "1px solid green" }}>
           <BugReportIcon style={{ paddingRight: "6px", color: "green" }} />
           <div className="heading">
-            <p style={{ marginBottom: 0, color: "green" }}>Bugs Resolved: 1</p>
+            <p style={{ marginBottom: 0, color: "green" }}>Bugs Resolved:0</p>
           </div>
         </div>
       </div>
